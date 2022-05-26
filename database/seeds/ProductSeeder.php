@@ -21,8 +21,8 @@ class ProductSeeder extends Seeder
     		DB::table('product')->insert([
     			'nama' => "Bahan ".$faker->streetName,
     			'stock' => $faker->numberBetween(100,1000),
-    			'harga_beli' => $faker->numberBetween(100000,100000000),
-    			'harga_jual' => $faker->numberBetween(100000,100000000),
+    			'harga_beli' => $faker->numberBetween(10000,1000000),
+    			'harga_jual' => $faker->numberBetween(10000,1000000),
                 'status'   => 'ready',
                 'created_at'=> Carbon::now(),
     		]);

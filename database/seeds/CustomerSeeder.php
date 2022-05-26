@@ -15,9 +15,9 @@ class CustomerSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create('id_ID');
- 
+
     	for($i = 1; $i <= 20; $i++){
- 
+
     		DB::table('customer')->insert([
     			'nama' => $faker->name,
                 'email'=> $faker->companyEmail,
@@ -25,7 +25,6 @@ class CustomerSeeder extends Seeder
     			'alamat' => $faker->address,
                 'created_at'=> Carbon::now()
     		]);
- 
     	}
     }
 }
