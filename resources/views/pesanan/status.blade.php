@@ -5,11 +5,10 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulir Product Baru</h6>
         </div>
         <div class="card-body">
-            <form class="user" action="{{route('status.simpan')}}" method="post">
+            <form class="user" action="{{route('simpan.status_pesanan')}}" method="post">
                 @csrf
                 @foreach ($datas as $data )
-                <input type="hidden" name="id" value="{{$data->id}}" id="">
-                <input type="hidden" name="id_pesanan" value="{{$data->id_pesanan}}" id="">
+                <input type="hidden" name="id" value="{{$data->id}}" >
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <label for="">Nama Customer</label>
@@ -33,7 +32,7 @@
 
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        <a href="{{route('quality')}}" class="btn btn-danger btn-block btn">
+                        <a href="{{route('pesanan')}}" class="btn btn-danger btn-block btn">
                             <i class="fas fa-arrow-left fa-fw"></i> Kembali
                         </a>
                     </div>

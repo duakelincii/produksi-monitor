@@ -10,6 +10,7 @@ use App\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
 class PesananController extends Controller
 {
@@ -97,6 +98,27 @@ class PesananController extends Controller
         $data->delete();
         $pesan = 'pesanan Berhasil Dihapus...!!!';
         return redirect(route('pesanan'))->with('error',$pesan);
+    }
+
+    public function status($id){
+        $datas = Pesanan::where('id',$id)->get();
+        return view('pesanan.status',compact('datas'));
+    }
+
+    public function simpan_status_pesanan(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            Pesanan::where('id',$request->id)->update([
+                'status' => $request->status,
+            ]);
+            DB::commit();
+            $pesan ='Status Pesanan Berhasil Diupdate...!!!';
+            return redirect(route('pesanan'))->with('pesan',$pesan);
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollBack();
+        }
     }
 
     public function payment($id)

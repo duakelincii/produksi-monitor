@@ -41,6 +41,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pesanan/detail/{id}','PesananController@detail')->name('pesanan.detail');
     Route::get('/pesanan/payment/{id}','PesananController@payment')->name('pesanan.payment');
     Route::post('/pesanan/simpan','PesananController@store')->name('pesanan.simpan');
+    Route::get('/pesanan/status/{id}','PesananController@status')->name('status.pesanan');
+    Route::post('/pesanan/simpan/status','PesananController@simpan_status_pesanan')->name('simpan.status_pesanan');
     Route::post('/pesanan/payment/simpan','PesananController@payment_store')->name('payment.store');
     Route::post('/pesanan/update','PesananController@update')->name('pesanan.update');
     Route::delete('/pesanan/delete/{id}','PesananController@destroy')->name('pesanan.delete');
@@ -61,7 +63,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/quality/tambah','QualityController@create')->name('quality.create');
     Route::get('/quality/edit/{id}','QualityController@edit')->name('quality.edit');
     Route::post('/quality/simpan','QualityController@store')->name('quality.simpan');
-    Route::post('/quality/simpan/status','QualityController@status_update')->name('status.simpan');
+    Route::post('/quality/simpan/status/{id}','QualityController@status_update')->name('status.simpan');
     Route::post('/quality/update','QualityController@update')->name('quality.update');
     Route::delete('/quality/delete/{id}','QualityController@destroy')->name('quality.delete');
 

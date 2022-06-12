@@ -54,7 +54,9 @@
                             </td>
                             <td>
                                 @if ($data->status == 'order baru')
-                                <a href="{{route('pesanan.edit',$data->id)}}" class="btn btn-primary">Edit</a>
+                                <a href="{{route('pesanan.edit',$data->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="{{route('status.pesanan',$data->id)}}" class="btn btn-primary btn-sm">Proses</a>
+                                @elseif ($data->status == 'terkirim')
                                 <a href="{{route('pesanan.payment',$data->id)}}" class="btn btn-success">Bayar</a>
                                 @endif
                             </td>
@@ -65,6 +67,7 @@
             </div>
         </div>
     </div>
+
     <script>
         $(document).ready(function() {
             $('#pesanan').DataTable();

@@ -35,7 +35,7 @@ class QualityController extends Controller
     {
         $cek = QualityControl::where('id_pesanan',$request->id_pesanan)->first();
         // dd($cek);
-        if($cek){
+        if($cek == 'proses'){
             QualityControl::where('id_pesanan',$request->id_pesanan)->update([
                 'status'    => $request->status
             ]);
