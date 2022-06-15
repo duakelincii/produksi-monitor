@@ -70,7 +70,7 @@
                 Menu
             </div>
             <?php $role = Auth::user()->role; ?>
-            @if ($role == 'admisi')
+            @if ($role == 'staff')
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">
@@ -86,64 +86,21 @@
                     </div>
                 </li>
 
-                <hr class="sidebar-divider">
-
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Menu Tambahan
-                </div>
-
-                <!-- Nav Item - Tables -->
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{route('customer')}}">
-                        <i class="fas fa-address-book"></i>
-                        <span>Customer</span></a>
-                </li>
-            @elseif($role == 'purchasing')
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Purchasing</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{route('purchasing.create')}}">Purchasing Order (PO)</a>
-                        <a class="collapse-item" href="{{route('purchasing')}}">List PO</a>
-                    </div>
-                </div>
-            </li>
-
-            <hr class="sidebar-divider">
-
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Menu Tambahan
-                </div>
-
-                <!-- Nav Item - Tables -->
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{route('supplier')}}">
-                        <i class="fas fa-luggage-cart"></i>
-                        <span>Supplier</span></a>
-                </li>
-            @elseif ($role == 'pengiriman')
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsepengiriman"
-                        aria-expanded="true" aria-controls="collapsepengiriman">
-                        <i class="fas fa-truck"></i>
-                        <span>Pengiriman</span>
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                        aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Purchasing</span>
                     </a>
-                    <div id="collapsepengiriman" class="collapse" aria-labelledby="headingpengiriman"
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="{{route('pengiriman')}}">List Pengiriman</a>
-                            <a class="collapse-item" href="{{route('pengiriman.create')}}">Buat Pengiriman</a>
+                            <a class="collapse-item" href="{{route('purchasing.create')}}">Purchasing Order (PO)</a>
+                            <a class="collapse-item" href="{{route('purchasing')}}">List PO</a>
                         </div>
                     </div>
                 </li>
-            @elseif ($role == 'controling')
+
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsequality"
                         aria-expanded="true" aria-controls="collapsequality">
@@ -158,6 +115,22 @@
                         </div>
                     </div>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsepengiriman"
+                        aria-expanded="true" aria-controls="collapsepengiriman">
+                        <i class="fas fa-truck"></i>
+                        <span>Pengiriman</span>
+                    </a>
+                    <div id="collapsepengiriman" class="collapse" aria-labelledby="headingpengiriman"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="{{route('pengiriman')}}">List Pengiriman</a>
+                            <a class="collapse-item" href="{{route('pengiriman.create')}}">Buat Pengiriman</a>
+                        </div>
+                    </div>
+                </li>
+
             @elseif ($role == 'manager')
             <!-- Nav Item - Utilities Collapse Menu -->
                 <li class="nav-item">
@@ -175,7 +148,7 @@
                         </div>
                     </div>
                 </li>
-            @elseif ($role == 'super admin')
+            @elseif ($role == 'admin')
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"

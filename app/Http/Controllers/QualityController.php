@@ -34,11 +34,11 @@ class QualityController extends Controller
     public function status_update(Request $request)
     {
         $cek = QualityControl::where('id_pesanan',$request->id_pesanan)->first();
-        // dd($cek);
         if($cek == 'proses'){
             QualityControl::where('id_pesanan',$request->id_pesanan)->update([
                 'status'    => $request->status
             ]);
+            Pesanan::where('id',$request->id_pesanan)->update(['status' => $request->status]);
             $pesan ='Update Proses Pesanan Berhasil...!!!';
             return redirect(route('quality'))->with('pesan',$pesan);
         }else{
@@ -48,6 +48,7 @@ class QualityController extends Controller
                 'status'    => $request->status,
                 'created_at'    => Carbon::now(),
             ]);
+            Pesanan::where('id',$request->id_pesanan)->update(['status' => $request->status]);
             $pesan ='Update Proses Pesanan Berhasil...!!!';
             return redirect(route('quality'))->with('pesan',$pesan);
         }

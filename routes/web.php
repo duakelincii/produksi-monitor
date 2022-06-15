@@ -63,7 +63,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/quality/tambah','QualityController@create')->name('quality.create');
     Route::get('/quality/edit/{id}','QualityController@edit')->name('quality.edit');
     Route::post('/quality/simpan','QualityController@store')->name('quality.simpan');
-    Route::post('/quality/simpan/status/{id}','QualityController@status_update')->name('status.simpan');
+    Route::post('/quality/simpan/status','QualityController@status_update')->name('status.simpan');
     Route::post('/quality/update','QualityController@update')->name('quality.update');
     Route::delete('/quality/delete/{id}','QualityController@destroy')->name('quality.delete');
 

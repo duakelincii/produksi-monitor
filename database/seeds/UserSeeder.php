@@ -18,14 +18,14 @@ class UserSeeder extends Seeder
             'username' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
-            'role'     => 'super admin'
+            'role'     => 'admin'
         ]);
         DB::table('users')->insert([
             'name' => 'Puput indah Pratama',
             'username' => 'puput',
             'email' => 'puput@gmail.com',
             'password' => Hash::make('password'),
-            'role'     => 'admisi'
+            'role'     => 'staff'
         ]);
         DB::table('users')->insert([
             'name' => 'Rizki akbar',
@@ -33,20 +33,6 @@ class UserSeeder extends Seeder
             'email' => 'rizki@gmail.com',
             'password' => Hash::make('password'),
             'role'     => 'manager'
-        ]);
-        DB::table('users')->insert([
-            'name' => 'Daniel Sabat',
-            'username' => 'daniel',
-            'email' => 'daniel@gmail.com',
-            'password' => Hash::make('password'),
-            'role'     => 'purchasing'
-        ]);
-        DB::table('users')->insert([
-            'name' => 'Rizal Kocak',
-            'username' => 'rizal',
-            'email' => 'rizal@gmail.com',
-            'password' => Hash::make('password'),
-            'role'     => 'pengiriman'
         ]);
     }
 }

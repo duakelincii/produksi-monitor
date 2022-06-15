@@ -36,9 +36,7 @@
                             <td>{{$data->customer->nama}}</td>
                             <td>{{ \Carbon\Carbon::parse($data->tgl_selesai)->format('d-m-Y')}}</td>
                             <td>
-                                @if ($data->status == 'order baru')
-                                <div class="badge badge-danger"> Order Baru </div>
-                                @elseif ($data->status == 'proses')
+                                @if ($data->status == 'proses')
                                         <div class="badge badge-warning"> Proses </div>
                                     @endif
                             </td>
@@ -69,14 +67,21 @@
                   @foreach ($datas as $data )
                   <input type="hidden" name="id_pesanan" value="{{$data->id}}">
                   <input type="hidden" name="id_product" value="{{$data->id_product}}">
-                  @endforeach
+                  <div class="form-group row">
+                      <div class="col-sm-12">
+                          <label for="">Status Quality Control</label>
+                          <div class="input-group mb-2">
+                              <input type="text" class="form-control" value="{{$data->customer->nama}}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <label for="">Status Quality Control</label>
                         <div class="input-group mb-2">
                             <select name="status" id="" class="form-control">
-                                <option value=""></option>
-                                <option value="proses">Proses</option>
+                                <option value="">-- Pilih Proses --</option>
                                 <option value="cuting">Cutting</option>
                                 <option value="jahit">Jahit</option>
                                 <option value="finishing">Finishing</option>

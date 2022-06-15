@@ -41,12 +41,10 @@ class PesananController extends Controller
         try {
             $data = $request->all();
 
-            $dt_produk = Product::where('id', $request->id_product)->first();
-
             $pesanan = new Pesanan;
             $pesanan->id_product = $data['id_product'];
             $pesanan->quantity = $data['quantity'];
-            $pesanan->harga_total = $data['quantity']*$dt_produk->harga_jual;
+            // $pesanan->harga_total = $data['quantity']*$dt_produk->harga_jual;
             $pesanan->kode = $data['kode'];
             $pesanan->id_customer = $data['id_customer'];
             $pesanan->tgl_pesan = $data['tgl_pesan'];
