@@ -68,17 +68,13 @@
 
                     <div class="form-group row">
                         <div class="col-sm-3 text-md-right">
-                            <label for="keluhan-utama"><strong>List Product</strong></label>
+                            <label for="keluhan-utama"><strong>Product</strong></label>
                         </div>
                         <div class="col-sm-1 text-md-center">
                             :
                         </div>
                         <div class="col-sm-8">
-                            @foreach ($details as $detail )
-                            @if ($detail->id_product != null)
-                                <li>{{$detail->product->nama}} / {{$detail->quantity}} Pcs</li>
-                            @endif
-                            @endforeach
+                            <p class="text-md-left">{{ $data->product->nama }} / {{$data->barang_ready}} Pcs</p>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -89,7 +85,7 @@
                             :
                         </div>
                         <div class="col-sm-8">
-                            <p>@rupiah($total['harga'])</p>
+                            <p class="text-md-left">@rupiah($data->harga_total)</p>
                         </div>
                     </div>
 
@@ -99,7 +95,7 @@
 
 
             <div class="form-group row">
-            <div class="col-sm-4 ml-3 mb-sm-0">
+            <div class="col-sm-4 ml-3 mb-sm-0" align="right">
                 <a href= "{{route('pesanan')}}" class="btn btn-danger btn-block" name="simpan">
                      <i class="fas fa-arrow-left fa-fw"></i> kembali
                 </a>

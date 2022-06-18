@@ -49,10 +49,9 @@
                             <td>
                                 @if ($data->status =='belum lunas' && 'jatuh tempo')
                                 <a href="{{route('purchasing.edit',$data->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" data-id="{{ $data->id }}">Proses</a>
+                                <a href="{{route('purchasing.payment',$data->id)}}" class="btn btn-warning btn-sm">Payment</a>
                                 @elseif ($data->status == 'lunas')
                                 <a href="{{route('purchasing.stockin',$data->id)}}" class="btn btn-success btn-sm">stock In</a>
-                                @elseif ($data->status == 'selesai')
                                 @endif
                             </td>
                         </tr>
@@ -63,59 +62,13 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Update Status Proses Pesanan</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form action="{{route('purchasing.status')}}" method="POST">
-                  @csrf
-                  @foreach ($datas as $data )
-                  <input type="hidden" name="id" value="{{$data->id}}">
-                  @endforeach
-                <div class="form-group row">
-                    <div class="col-sm-12">
-                        <label for="">Status Quality Control</label>
-                        <div class="input-group mb-2">
-                            <select name="status" id="" class="form-control">
-                                <option value=""></option>
-                                <option value="belum lunas">Belum Lunas</option>
-                                <option value="lunas">Lunas</option>
-                                <option value="jatuh tempo">Jatuh Tempo</option>
-                                <option value="selesai">Selesai</option>
-                            </select>
-                        </div>
-                    </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <div class="form-group row">
-                        <div class="col-sm-6">
-                            <a href="" class="btn btn-danger btn-block btn"> Kembali
-                            </a>
-                        </div>
-                        <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary btn-block"> Simpan
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <script>
         $(document).ready(function() {
-            $('#pesanan').DataTable();
+            $('#pesanan').DataTable({
+                "order": [
+                    [0, "desc"]
+                ]
+            });
         });
     </script>
 @endsection

@@ -258,11 +258,20 @@
                         <i class="fas fa-luggage-cart"></i>
                         <span>Supplier</span></a>
                 </li>
-                <!-- Nav Item - Tables -->
-                <li class="nav-item ">
-                    <a class="nav-link" href="{{route('product')}}">
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product"
+                        aria-expanded="true" aria-controls="product">
                         <i class="fas fa-warehouse"></i>
-                        <span>Product</span></a>
+                        <span>Product</span>
+                    </a>
+                    <div id="product" class="collapse" aria-labelledby="headingTwo"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="{{route('product')}}">Produksi</a>
+                            <a class="collapse-item" href="{{route('paket')}}">Paket</a>
+                        </div>
+                    </div>
                 </li>
 
             @endif
@@ -292,7 +301,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Topbar Search -->
+                    {{-- <!-- Topbar Search -->
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
@@ -304,7 +313,7 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </form> --}}
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">

@@ -2,10 +2,10 @@
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header d-sm-flex align-items-center justify-content-between py-3 ">
-            <h6 class="m-0 font-weight-bold text-primary">Data pesanan</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Data Quality Control</h6>
             <div>
-                <a href="" class="d-none d-sm-inline-block btn btn-primary btn-sm shadow-sm">
-                    <i class="fas fa-plus fa-sm"></i> Tambah pesanan</a>
+                <a href="{{route('quality.create')}}" class="d-none d-sm-inline-block btn btn-primary btn-sm shadow-sm">
+                    <i class="fas fa-plus fa-sm"></i> Tambah QC</a>
             </div>
         </div>
         <div class="card-body">
@@ -64,7 +64,11 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('#pesanan').DataTable();
+            $('#pesanan').DataTable({
+                "order": [
+                    [0, "desc"]
+                ]
+            });
         });
     </script>
 @endsection

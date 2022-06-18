@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/quality/status/{id}','QualityController@status')->name('quality.status');
     Route::get('/quality/input/{id}','QualityController@input_barang')->name('quality.input');
     Route::get('/quality/tambah','QualityController@create')->name('quality.create');
+    Route::post('/quality/proses','QualityController@proses')->name('quality.proses');
     Route::get('/quality/edit/{id}','QualityController@edit')->name('quality.edit');
     Route::post('/quality/simpan','QualityController@store')->name('quality.simpan');
     Route::post('/quality/simpan/status','QualityController@status_update')->name('status.simpan');
@@ -73,6 +74,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/purchasing/edit/{id}','PurchasingController@edit')->name('purchasing.edit');
     Route::post('/purchasing/simpan','PurchasingController@store')->name('purchasing.simpan');
     Route::post('/purchasing/simpan/status','PurchasingController@store_status')->name('purchasing.status');
+    Route::get('/purchasing/payment/{id}','PurchasingController@payment')->name('purchasing.payment');
+    Route::post('/purchasing/payment/simpan','PurchasingController@payment_store')->name('po.payment');
     Route::get('/purchasing/stockin/{id}','PurchasingController@stockin')->name('purchasing.stockin');
     Route::post('/purchasing/stockin/simpan','PurchasingController@stockin_store')->name('stockin.simpan');
     Route::post('/purchasing/update','PurchasingController@update')->name('purchasing.update');
@@ -101,6 +104,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/customer/simpan','CustomerController@store')->name('customer.simpan');
     Route::post('/customer/update','CustomerController@update')->name('customer.update');
     Route::delete('/customer/delete/{id}','CustomerController@destroy')->name('customer.delete');
+
+    //Paket
+    Route::get('/paket','PaketController@index')->name('paket');
+    Route::get('/paket/tambah','PaketController@create')->name('paket.create');
+    Route::get('/paket/edit/{id}','PaketController@edit')->name('paket.edit');
+    Route::post('/paket/simpan','PaketController@store')->name('paket.simpan');
+    Route::post('/paket/update','PaketController@update')->name('paket.update');
+    Route::delete('/paket/delete/{id}','PaketController@destroy')->name('paket.delete');
 
 });
 

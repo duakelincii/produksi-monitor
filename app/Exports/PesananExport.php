@@ -38,9 +38,13 @@ class PesananExport implements FromCollection , WithHeadings ,ShouldAutoSize
                 'status'    => $data->status,
             ];
         }
-        return new Collection([
-            $items
-        ]);
+        if($datas != null){
+            return new Collection([
+                $items
+            ]);
+        }else{
+            return redirect(route('pesanan'))->with('error','Tidak Ada Data');
+        }
     }
 
     public function headings(): array

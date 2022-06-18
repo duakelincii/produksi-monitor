@@ -5,13 +5,13 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulir Product Baru</h6>
         </div>
         <div class="card-body">
-            <form class="user" action="{{route('payment.store')}}" method="post" enctype="multipart/form-data">
+            <form class="user" action="{{route('po.payment')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 @foreach ($datas as $data )
-                <input type="hidden" name="id_pesanan" value="{{$data->id}}" id="">
+                <input type="hidden" name="id_purchasing" value="{{$data->id}}" id="">
                 <div class="form-group row">
                     <div class="col-sm-12 mb-3 mb-sm-0">
-                        <label for="nama_customer">No Pesanan</label>
+                        <label for="nama_customer">No Purchasing Order</label>
                         <input type="text" value="{{$data->kode}}" class="form-control" readonly>
                     </div>
                 </div>
@@ -19,9 +19,9 @@
                     <div class="col-sm-12">
                         <label for="">Pilih Customer</label>
                         <div class="input-group mb-2">
-                            <select name="id_customer" id="" class="form-control" readonly>
-                                    <option value="{{$data->id_customer}}" {{ $data->id == $data->id_customer ? 'selected' : '' }}>
-                                    {{$data->customer->nama}}</option>
+                            <select name="id_supplier" id="" class="form-control" readonly>
+                                    <option value="{{$data->id_supplier}}" {{ $data->id == $data->id_supplier ? 'selected' : '' }}>
+                                    {{$data->supplier->nama}}</option>
                             </select>
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                     <div class="col-sm-12">
                         <label for="">Harga Total</label>
                         <div class="input-group mb-2">
-                            <input type="text" value="@rupiah($data->harga_total)" class="form-control" readonly>
+                            <input type="text" value="@rupiah($data->harga_barang)" class="form-control" readonly>
                         </div>
                     </div>
                 </div>
@@ -61,13 +61,13 @@
                     <div class="col-sm-6">
                         <label for="">Nama Rekening</label>
                         <div class="input-group mb-2">
-                            <input type="datetime-local" class="form-control" name="nama_rekening" required>
+                            <input type="text" class="form-control" name="nama_rekening" required>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <label for="">Nomor Rekening</label>
                         <div class="input-group mb-2">
-                            <input type="number" class="form-control " name="no_rekening" required>
+                            <input type="text" class="form-control " name="no_rekening" required>
                         </div>
                     </div>
                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Pesanan;
+use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -33,6 +34,8 @@ class HomeController extends Controller
         $bulan = Pesanan::select(DB::raw("MONTHNAME(created_at) as bulan"))
             ->GroupBy(DB::raw("MONTHNAME(created_at)"))
             ->pluck('bulan');
+
+        $datas = Product::all();
 
         $pendapatan = Pesanan::select(DB::raw("CAST(SUM(harga_total) AS UNSIGNED INTEGER ) as harga_total"))
             ->GroupBy(DB::raw("Month(created_at)"))

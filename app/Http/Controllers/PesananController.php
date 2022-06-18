@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\Paket;
 use App\Payment;
 use App\Pesanan;
 use App\Pesenandetails;
@@ -26,7 +27,8 @@ class PesananController extends Controller
         $kode = 'OR-'.rand();
         $customers = Customer::get();
         $products = Product::get();
-        return view('pesanan.create',compact('kode','customers','products'));
+        $pakets = Paket::get();
+        return view('pesanan.create',compact('kode','customers','products','pakets'));
     }
 
     public function detail($id)
@@ -44,7 +46,7 @@ class PesananController extends Controller
             $pesanan = new Pesanan;
             $pesanan->id_product = $data['id_product'];
             $pesanan->quantity = $data['quantity'];
-            // $pesanan->harga_total = $data['quantity']*$dt_produk->harga_jual;
+            $pesanan->tgl_tempo = date('Y-m-d H:i:s', strtotime("+30 day",strtotime($data['tgl_selesai'])));
             $pesanan->kode = $data['kode'];
             $pesanan->id_customer = $data['id_customer'];
             $pesanan->tgl_pesan = $data['tgl_pesan'];
@@ -92,7 +94,7 @@ class PesananController extends Controller
 
     public function destroy($id)
     {
-        $data = Pesanan::findOrFail($id);
+        $data = Pesanan::where('id',$id)->get();
         $data->delete();
         $pesan = 'pesanan Berhasil Dihapus...!!!';
         return redirect(route('pesanan'))->with('error',$pesan);
@@ -122,14 +124,23 @@ class PesananController extends Controller
     public function payment($id)
     {
         $datas = Pesanan::where('id',$id)->get();
-        return view('pesanan.payment',compact('datas'));
+        foreach($datas as $data){
+            if(strtotime($data['tgl_tempo']) <= strtotime('10 day',strtotime(Carbon::now()))){
+                $discount = $data->harga_total*2/100;
+                $total = $data->harga_total - $discount;
+                return view('pesanan.payment',compact('datas','discount','total'));
+            }else{
+                return view('pesanan.payment',compact('datas'));
+            }
+        }
     }
 
     public function payment_store(Request $request)
     {
         DB::beginTransaction();
         try {
-                $image = $request->bukti_bayar;
+            $datas = Pesanan::where('id',$request->id)->get();
+            $image = $request->bukti_bayar;
             $imageName = time() . '.' . $image->extension();
             $image->move(public_path('bukti_bayar'), $imageName);
             Payment::insert([

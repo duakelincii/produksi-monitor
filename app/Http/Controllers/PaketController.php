@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Paket;
 use Illuminate\Http\Request;
 
 class PaketController extends Controller
@@ -13,7 +14,8 @@ class PaketController extends Controller
      */
     public function index()
     {
-        //
+        $datas = Paket::all();
+        return view('paket.index',compact('datas'));
     }
 
     /**
@@ -23,7 +25,7 @@ class PaketController extends Controller
      */
     public function create()
     {
-        //
+        return view('paket.create');
     }
 
     /**
@@ -34,29 +36,15 @@ class PaketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Paket::create($request->all());
+        return redirect(route('paket'))->with('pesan','Data Berhasil Diinput');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $datas = Paket::where('id',$id)->get();
+        return view('paket.edit',compact('datas'));
     }
 
     /**

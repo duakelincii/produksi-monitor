@@ -69,7 +69,7 @@
         </div>
     </div>
     <?php $role = Auth::user()->role; ?>
-    @if ($role == 'super admin')
+    @if ($role == 'admin')
         <figure class="highcharts-figure">
             <div id="pendapatan"></div>
         </figure>

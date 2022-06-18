@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Payment;
 use App\PaymentPurchasing;
 use App\Product;
 use App\Purchasing;
@@ -84,12 +85,6 @@ class PurchasingController extends Controller
         //
     }
 
-    public function payment($id)
-    {
-        $datas = Purchasing::where('id',$id)->get();
-        $suppliers = Supplier::get();
-        return view('purchasing.payment',compact('datas','suppliers'));
-    }
 
     public function stockin($id)
     {
@@ -166,12 +161,50 @@ class PurchasingController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+    public function payment($id)
+    {
+        $datas = Purchasing::where('id',$id)->get();
+        $suppliers = Supplier::get();
+        foreach($datas as $data){
+            if(strtotime($data['tgl_tempo']) <= strtotime('10 day',strtotime(Carbon::now()))){
+                $discount = $data->harga_barang*2/100;
+                $total = $data->harga_barang - $discount;
+                return view('purchasing.payment',compact('datas','discount','total','suppliers'));
+            }else{
+                return view('purchasing.payment',compact('datas','suppliers'));
+            }
+        }
+    }
+
+    public function payment_store(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $datas = Purchasing::where('id',$request->id)->get();
+            $image = $request->bukti_bayar;
+            $imageName = "PO" . time() . '.' . $image->extension();
+            $image->move(public_path('bukti_bayar'), $imageName);
+            Payment::insert([
+                'id_purchasing'   => $request->id_purchasing,
+                'tgl_bayar' => $request->tgl_bayar,
+                'jumlah_bayar' => $request->jumlah_bayar,
+                'nama_rekening' => $request->nama_rekening,
+                'no_rekening' => $request->no_rekening,
+                'bukti_bayar' => $imageName,
+            ]);
+            Purchasing::where('id',$request->id_purchasing)->update([
+                'status' => 'lunas'
+            ]);
+            DB::commit();
+            $pesan = 'Pembayaran Anda Berhasil';
+            return redirect(route('purchasing'))->with('pesan',$pesan);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+
     public function destroy($id)
     {
         $data = Purchasing::findOrFail($id);

@@ -5,7 +5,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulir Product Baru</h6>
         </div>
         <div class="card-body">
-            <form class="user" action="{{route('product.simpan')}}" method="post">
+            <form class="user" action="{{route('paket.simpan')}}" method="post">
                 @csrf
                 <div class="form-group row">
                     <div class="col-sm-12 mb-3 mb-sm-0">
@@ -14,8 +14,8 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-6">
-                        <label for="">Stock Product</label>
+                    <div class="col-sm-12">
+                        <label for="">Harga Paket</label>
                         <div class="input-group mb-2">
                             <input type="number" class="form-control " name="harga" placeholder="Harga Paket">
                         </div>

@@ -31,27 +31,26 @@ class QualityController extends Controller
         return view('qualitycontrol.create',compact('datas'));
     }
 
+    public function proses(Request $request)
+    {
+        $items = $request->get('items');
+        dd($items);
+    }
+
     public function status_update(Request $request)
     {
-        $cek = QualityControl::where('id_pesanan',$request->id_pesanan)->first();
-        if($cek == 'proses'){
-            QualityControl::where('id_pesanan',$request->id_pesanan)->update([
-                'status'    => $request->status
-            ]);
-            Pesanan::where('id',$request->id_pesanan)->update(['status' => $request->status]);
-            $pesan ='Update Proses Pesanan Berhasil...!!!';
-            return redirect(route('quality'))->with('pesan',$pesan);
-        }else{
-            QualityControl::insert([
-                'id_pesanan'    => $request->id_pesanan,
+        QualityControl::updateOrCreate(
+            [
+                'id_pesanan' => $request->id_pesanan
+            ],[
                 'id_product'    => $request->id_product,
                 'status'    => $request->status,
                 'created_at'    => Carbon::now(),
-            ]);
+            ]
+        );
             Pesanan::where('id',$request->id_pesanan)->update(['status' => $request->status]);
             $pesan ='Update Proses Pesanan Berhasil...!!!';
             return redirect(route('quality'))->with('pesan',$pesan);
-        }
 
     }
 
@@ -78,8 +77,9 @@ class QualityController extends Controller
 
         $dt_produk = Product::where('id', $request->id_product)->first();
         $kurangi_stok = $dt_produk->stock - $request->barang_ready;
-        Pesanan::where('id',$request->id_pesanan)->update([
+        $harga = Pesanan::where('id',$request->id_pesanan)->update([
             'barang_ready'  => $request->barang_ready,
+            'harga_total'   => $request->barang_ready * $dt_produk->harga_jual,
             'status' => 'siap kirim'
         ]);
 

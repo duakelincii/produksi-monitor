@@ -20,6 +20,7 @@ class CreatePesananTable extends Migration
             $table->string('id_customer');
             $table->dateTime('tgl_pesan');
             $table->dateTime('tgl_selesai');
+            $table->dateTime('tgl_tempo');
             $table->string('quantity');
             $table->string('harga_total');
             $table->enum('status', ['order baru', 'proses', 'cuting', 'jahit', 'finishing', 'siap kirim', 'terkirim']);

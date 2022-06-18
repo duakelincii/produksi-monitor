@@ -15,7 +15,8 @@ class CreatePaymentPurchasingTable extends Migration
     {
         Schema::create('payment', function (Blueprint $table) {
             $table->id();
-            $table->string('id_pesanan');
+            $table->string('id_pesanan')->nullable();
+            $table->string('id_purchasing')->nullable();
             $table->dateTime('tgl_bayar');
             $table->string('jumlah_bayar');
             $table->string('nama_rekening');

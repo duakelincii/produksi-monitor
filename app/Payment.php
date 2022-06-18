@@ -8,6 +8,6 @@ class Payment extends Model
 {
     protected $table = 'payment';
     protected $fillable = [
-        'id_pesanan','tgl_bayar','jumlah_bayar','nama_rekening','no_rekening','bukti_bayar'
+        'id_pesanan','id_purchasing','tgl_bayar','jumlah_bayar','nama_rekening','no_rekening','bukti_bayar'
     ];
 }

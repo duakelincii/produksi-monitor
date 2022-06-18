@@ -23,7 +23,6 @@ class PendapatanExport implements FromCollection , WithHeadings, ShouldAutoSize
         }else{
             $datas = Pesanan::where('status','=','terkirim')
                         ->whereBetween('tgl_pesan',[$this->start_date , $this->end_date])->get();
-
             $no = 1;
             foreach($datas as $data)
 

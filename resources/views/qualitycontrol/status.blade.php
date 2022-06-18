@@ -10,6 +10,7 @@
                 @foreach ($datas as $data )
                 <input type="hidden" name="id" value="{{$data->id}}" id="">
                 <input type="hidden" name="id_pesanan" value="{{$data->id_pesanan}}" id="">
+                <input type="hidden" name="id_product" value="{{$data->id_product}}" id="">
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <label for="">Nama Customer</label>

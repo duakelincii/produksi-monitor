@@ -3,10 +3,6 @@
     <div class="card shadow mb-4">
         <div class="card-header d-sm-flex align-items-center justify-content-between py-3 ">
             <h6 class="m-0 font-weight-bold text-primary">Data pesanan</h6>
-            <div>
-                <a href="{{route('pesanan.create')}}" class="d-none d-sm-inline-block btn btn-primary btn-sm shadow-sm">
-                    <i class="fas fa-plus fa-sm"></i> Tambah pesanan</a>
-            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -41,7 +37,8 @@
                                     @endif
                             </td>
                             <td>
-                                <a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" data-id="{{ $data->id }}">Proses</a>
+                                <button type="submit"  class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
+                                onClick="ShowModal(this)" data-id="{{$data->id}}">Proses</button>
                             </td>
                         </tr>
                         @endforeach
@@ -50,7 +47,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -114,5 +110,9 @@
         $(document).ready(function() {
             $('#pesanan').DataTable();
         });
+
+        function ShowModal(elem){
+            var dataId = $(elem).data("id");
+        }
     </script>
 @endsection

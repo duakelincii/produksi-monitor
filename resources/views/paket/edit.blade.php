@@ -11,46 +11,22 @@
                 <input type="hidden" name="id" value="{{$data->id}}" id="">
                 <div class="form-group row">
                     <div class="col-sm-12 mb-3 mb-sm-0">
-                        <label for="nama_customer">Nama Product</label>
-                        <input type="text" name="nama" value="{{$data->nama}}" class="form-control" >
+                        <label for="nama_customer">Nama Paket</label>
+                        <input type="text" name="nama_paket" value="{{$data->nama_paket}}" class="form-control" >
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-6">
-                        <label for="">Stock Product</label>
+                    <div class="col-sm-12">
+                        <label for="">Harga Paket</label>
                         <div class="input-group mb-2">
-                            <input type="text" class="form-control " value="{{$data->stock}}" name="stock" >
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="">Description</label>
-                        <div class="input-group mb-2">
-                            <select name="status" id="" class="form-control">
-                                <option value="">Pilih Status Product</option>
-                                <option value="ready">Ready</option>
-                                <option value="sold">Sold</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-6">
-                        <label for="">Harga Beli</label>
-                        <div class="input-group mb-2">
-                            <input type="number" class="form-control" value="{{$data->harga_beli}}" name="harga_beli" >
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="">Harga Jual</label>
-                        <div class="input-group mb-2">
-                            <input type="number" class="form-control " value="{{$data->harga_jual}}" name="harga_jual" placeholder="Harga Jual">
+                            <input type="text" class="form-control " value="{{$data->harga}}" name="harga" >
                         </div>
                     </div>
                 </div>
                 @endforeach
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        <a href="" class="btn btn-danger btn-block btn">
+                        <a href="{{route('paket')}}" class="btn btn-danger btn-block btn">
                             <i class="fas fa-arrow-left fa-fw"></i> Kembali
                         </a>
                     </div>
