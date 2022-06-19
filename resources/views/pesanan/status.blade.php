@@ -22,9 +22,6 @@
                         <div class="input-group mb-2">
                             <select name="status" id="" class="form-control">
                                 <option value="proses">Proses</option>
-                                <option value="cuting">Cutting</option>
-                                <option value="jahit">Jahit</option>
-                                <option value="finishing">Finishing</option>
                             </select>
                         </div>
                     </div>
