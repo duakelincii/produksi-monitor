@@ -19,6 +19,7 @@ class CreateQualityControlTable extends Migration
             $table->string('id_product');
             $table->string('barang_rusak')->nullable();
             $table->string('barang_ready')->nullable();
+            $table->text('ket')->nullable();
             $table->enum('status',['cuting','jahit','finishing']);
             $table->timestamps();
             $table->softDeletes();
