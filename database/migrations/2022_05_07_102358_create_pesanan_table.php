@@ -22,7 +22,7 @@ class CreatePesananTable extends Migration
             $table->dateTime('tgl_selesai');
             $table->dateTime('tgl_tempo');
             $table->string('quantity');
-            $table->string('harga_total');
+            $table->string('harga_total')->nullable();
             $table->enum('status', ['order baru', 'proses', 'cuting', 'jahit', 'finishing', 'siap kirim', 'terkirim']);
             $table->timestamps();
             $table->softDeletes();
