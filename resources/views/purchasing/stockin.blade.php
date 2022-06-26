@@ -44,10 +44,16 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <label for="">Harga Beli</label>
                         <div class="input-group mb-2">
                             <input type="number" name="harga_beli" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="">Margin Harga</label>
+                        <div class="input-group mb-2">
+                            <input type="number" name="margin_harga" class="form-control">
                         </div>
                     </div>
                 </div>

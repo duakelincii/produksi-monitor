@@ -2,10 +2,10 @@
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Formulir Product Baru</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Formulir Edit Data Customer</h6>
         </div>
         <div class="card-body">
-            <form class="user" action="{{route('supplier.update')}}" method="post">
+            <form class="user" action="{{route('customer.update')}}" method="post">
                 @csrf
                 @foreach ($datas as $data )
                 <input type="hidden" name="id" value="{{$data->id}}" id="">

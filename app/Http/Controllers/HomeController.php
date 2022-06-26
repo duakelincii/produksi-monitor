@@ -29,7 +29,7 @@ class HomeController extends Controller
         $jumlah['order_baru'] = Pesanan::where('status', 'order baru')->count();
         $jumlah['proses'] = Pesanan::where('status', 'proses')->count();
         $jumlah['siap_kirim'] = Pesanan::where('status', 'siap kirim')->count();
-        $jumlah['terkirim'] = Pesanan::where('status', 'terkirim')->count();
+        $jumlah['selesai'] = Pesanan::where('status', 'selesai')->count();
 
         $bulan = Pesanan::select(DB::raw("MONTHNAME(created_at) as bulan"))
             ->GroupBy(DB::raw("MONTHNAME(created_at)"))

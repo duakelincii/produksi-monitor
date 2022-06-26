@@ -25,9 +25,8 @@
                     <a href="{{route('pesanan')}}"class="btn btn-danger btn-block btn "><i class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                     <div class="col-sm-6">
-                        <a href="" onclick=" this.href='/laporan-pesanan/excel/'+ document.getElementById('start_date').value +
-                        '/'+ document.getElementById('end_date').value "
-                        target="-blank" class="btn btn-success btn-block btn "><i class="far fa-file-excel"></i> Cetak Excel</a>
+                        <a href="{{route('pesanan.pdf')}}"
+                        target="-blank" class="btn btn-info btn-block btn "><i class="far fa-file"></i> Cetak PDF</a>
                     </div>
                 </div>
             </form>

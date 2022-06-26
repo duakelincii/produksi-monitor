@@ -14,7 +14,7 @@
                             <th>Tanggal Jalan</th>
                             <th>Supir</th>
                             <th>No Kendaraan</th>
-                            <th>Status</th>
+                            <th>Surat Jalan</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -24,7 +24,7 @@
                             <th>Tanggal Jalan</th>
                             <th>Supir</th>
                             <th>No Kendaraan</th>
-                            <th>Status</th>
+                            <th>Surat Jalan</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -36,9 +36,7 @@
                                 <td>{{ $data->nama_supir }}</td>
                                 <td>{{ $data->no_kendaraan }}</td>
                                 <td>
-                                    @if ($data->pesanan->status == 'terkirim')
-                                        <div class="badge badge-success"> TERKIRIM </div>
-                                    @endif
+                                    <a href="{{route('pengiriman.cetak',$data->id)}}" target="-blank" title="PDF" class="btn btn-sm btn-info"><i class="fas fa-file-pdf"></i> PDF</a>
                                 </td>
                             </tr>
                         @endforeach

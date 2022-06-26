@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
+use Alert;
 
 class ProductController extends Controller
 {
@@ -37,15 +38,13 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         Product::insert([
-            'nama'  => $request->nama,
+            'nama'  => strtoupper($request->nama),
             'stock'  => $request->stock,
             'harga_beli'  => $request->harga_beli,
             'harga_jual'  => $request->harga_jual,
-            'status'  => $request->status,
         ]);
-
-        $pesan ='Product Berhasil Ditambahkan';
-        return redirect(route('product'))->with('pesan',$pesan);
+        Alert::success('Success','Product Berhasil Diinput');
+        return redirect(route('product'));
     }
 
     /**
@@ -81,14 +80,13 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         Product::where('id',$request->id)->update([
-            'nama'  => $request->nama,
+            'nama'  => strtoupper($request->nama),
             'stock'  => $request->stock,
             'harga_beli'  => $request->harga_beli,
             'harga_jual'  => $request->harga_jual,
-            'status'  => $request->status,
         ]);
-        $pesan = 'Product Berhasil Di Update...!!!';
-        return redirect(route('product'))->with('pesan',$pesan);
+        Alert::success('Success','Product Berhasil Diupdate');
+        return redirect(route('product'));
     }
 
     /**
@@ -101,8 +99,7 @@ class ProductController extends Controller
     {
         $data = Product::findOrFail($id);
         $data->delete();
-        $pesan = 'Product Berhasil Dihapus...!!!';
-
-        return redirect(route('product'))->with('error',$pesan);
+        Alert::warning('Success','Product Berhasil Dihapus');
+        return redirect(route('product'));
     }
 }

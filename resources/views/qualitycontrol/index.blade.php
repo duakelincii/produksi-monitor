@@ -31,31 +31,33 @@
                     </tfoot>
                     <tbody>
                         @foreach ($datas as $data )
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td>{{$data->pesanan->customer->nama}}</td>
-                            <td>{{$data->pesanan->tgl_selesai}}</td>
-                            <td>
-                                @if ($data->status == 'cuting')
-                                <div class="badge badge-warning"> Cutting </div>
-                                 @elseif ($data->status == 'jahit')
-                                <div class="badge badge-warning"> Jahit </div>
-                                 @elseif ($data->status == 'finishing')
-                                <div class="badge badge-primary"> Finishing </div>
-                                 @elseif ($data->status == 'selesai')
-                                <div class="badge badge-success"> Selesai </div>
-                                @endif
-                            </td>
-                            <td>
-                                @if ($data->status == 'cuting')
-                                <a href="{{route('quality.status',$data->id)}}" class="btn btn-primary">Proses</a>
-                                @elseif ($data->status == 'jahit')
-                                <a href="{{route('quality.status',$data->id)}}" class="btn btn-primary">Proses</a>
-                                @elseif ($data->status == 'finishing')
-                                <a href="{{route('quality.input',$data->id)}}" class="btn btn-success">Sortir</a>
-                                @endif
-                            </td>
-                        </tr>
+                            @if ($data->status != 'order baru' && $data->status != 'siap kirim' &&  $data->status != 'terkirim')
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$data->customer->nama}}</td>
+                                <td>{{$data->tgl_selesai}}</td>
+                                <td>
+                                    @if ($data->status == 'cuting')
+                                    <div class="badge badge-warning"> Cutting </div>
+                                    @elseif ($data->status == 'jahit')
+                                    <div class="badge badge-warning"> Jahit </div>
+                                    @elseif ($data->status == 'finishing')
+                                    <div class="badge badge-primary"> Finishing </div>
+                                    @elseif ($data->status == 'selesai')
+                                    <div class="badge badge-success"> Selesai </div>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($data->status == 'cuting')
+                                    <a href="{{route('quality.status',$data->id)}}" class="btn btn-primary">Proses</a>
+                                    @elseif ($data->status == 'jahit')
+                                    <a href="{{route('quality.status',$data->id)}}" class="btn btn-primary">Proses</a>
+                                    @elseif ($data->status == 'finishing')
+                                    <a href="{{route('quality.input',$data->id)}}" class="btn btn-success">Sortir</a>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>

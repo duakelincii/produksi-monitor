@@ -6,8 +6,10 @@ use App\Exports\PendapatanExport;
 use App\Exports\PesananExport;
 use App\Exports\QcExport;
 use App\Pesanan;
+use App\QualityControl;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 class LaporanController extends Controller
 {
@@ -18,9 +20,16 @@ class LaporanController extends Controller
         return view('laporan.pesanan',compact('datas'));
     }
 
-    public function pesananexport($start_date,$end_date)
+    public function pesananpdf(Request $request)
     {
-        return Excel::download(new PesananExport($start_date , $end_date),time().'.xlsx');
+        if($request->start_date == null || $request->end_date == null)
+        {
+            $datas = Pesanan::all();
+        }else{
+            $datas = Pesanan::whereBetween('tgl_selesai',[$request->start_date,$request->end_date])->get();
+        }
+        $pdf = PDF::loadView('pdf.pesanan',compact('datas'))->setPaper('A4','landscape');
+        return $pdf->stream();
     }
 
     public function pendapatan()
@@ -29,9 +38,16 @@ class LaporanController extends Controller
         return view('laporan.pendapatan',compact('datas'));
     }
 
-    public function pendapatanexport($start_date,$end_date)
+    public function pendapatanexport(Request $request)
     {
-        return Excel::download(new PendapatanExport($start_date , $end_date),time().'.xlsx');
+        if($request->start_date == null || $request->end_date == null)
+        {
+            $datas = Pesanan::all();
+        }else{
+            $datas = Pesanan::whereBetween('tgl_selesai',[$request->start_date,$request->end_date])->get();
+        }
+        $pdf = PDF::loadView('pdf.pesanan',compact('datas'))->setPaper('A4','landscape');
+        return $pdf->stream();
     }
 
     public function quality()
@@ -39,9 +55,16 @@ class LaporanController extends Controller
         return view('laporan.quality');
     }
 
-    public function qualityExport($start_date,$end_date)
+    public function qualitypdf(Request $request)
     {
-        return Excel::download(new QcExport($start_date , $end_date),time().'.xlsx');
+        if($request->start_date == null || $request->end_date == null)
+        {
+            $datas = QualityControl::all();
+        }else{
+            $datas = QualityControl::whereBetween('created_at',[$request->start_date,$request->end_date])->get();
+        }
+        $pdf = PDF::loadView('pdf.quality',compact('datas'))->setPaper('A4','potrait');
+        return $pdf->stream();
     }
 
 }

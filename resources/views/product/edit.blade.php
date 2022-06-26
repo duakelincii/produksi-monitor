@@ -16,20 +16,10 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <label for="">Stock Product</label>
                         <div class="input-group mb-2">
                             <input type="text" class="form-control " value="{{$data->stock}}" name="stock" >
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <label for="">Description</label>
-                        <div class="input-group mb-2">
-                            <select name="status" id="" class="form-control">
-                                <option value="">Pilih Status Product</option>
-                                <option value="ready">Ready</option>
-                                <option value="sold">Sold</option>
-                            </select>
                         </div>
                     </div>
                 </div>

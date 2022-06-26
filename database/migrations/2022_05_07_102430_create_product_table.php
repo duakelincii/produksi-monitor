@@ -19,7 +19,6 @@ class CreateProductTable extends Migration
             $table->string('stock');
             $table->string('harga_beli');
             $table->string('harga_jual');
-            $table->enum('status',['ready','sold']);
             $table->timestamps();
             $table->softDeletes();
         });

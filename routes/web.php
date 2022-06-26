@@ -27,16 +27,17 @@ Route::middleware(['auth'])->group(function () {
 
     //laporan
     Route::get('/laporan/pesanan','LaporanController@pesanan')->name('laporan.pesanan');
-    Route::get('/laporan-pesanan/excel/{start_date}/{end_date}','LaporanController@pesananExport')->name('pesanan.excel');
+    Route::get('/laporan-pesanan/pdf','LaporanController@pesananpdf')->name('pesanan.pdf');
     Route::get('/laporan/quality','LaporanController@quality')->name('laporan.quality');
-    Route::get('/laporan-quality/excel/{start_date}/{end_date}','LaporanController@qualityExport')->name('quality.excel');
+    Route::get('/laporan-quality/pdf','LaporanController@qualitypdf')->name('quality.pdf');
     Route::get('/laporan/pendapatan','LaporanController@pendapatan')->name('laporan.pendapatan');
-    Route::get('/laporan-pendapatan/excel/{start_date}/{end_date}','LaporanController@pendapatanExport')->name('pendapatan.excel');
+    Route::get('/laporan-pendapatan/pdf','LaporanController@pendapatanpdf')->name('pendapatan.pdf');
 
 
     //pesanan
     Route::get('/pesanan','PesananController@index')->name('pesanan');
     Route::get('/pesanan/tambah','PesananController@create')->name('pesanan.create');
+    Route::get('/pesanan/proses/{id}','PesananController@proses')->name('pesanan.proses');
     Route::get('/pesanan/edit/{id}','PesananController@edit')->name('pesanan.edit');
     Route::get('/pesanan/detail/{id}','PesananController@detail')->name('pesanan.detail');
     Route::get('/pesanan/payment/{id}','PesananController@payment')->name('pesanan.payment');
@@ -46,22 +47,23 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pesanan/payment/simpan','PesananController@payment_store')->name('payment.store');
     Route::post('/pesanan/update','PesananController@update')->name('pesanan.update');
     Route::delete('/pesanan/delete/{id}','PesananController@destroy')->name('pesanan.delete');
+    Route::get('/pesanan/invoice/{id}','PesananController@invoice')->name('pesanan.invoice');
 
     //pengiriman
     Route::get('/pengiriman','PengirimanController@index')->name('pengiriman');
     Route::get('/pengiriman/tambah','PengirimanController@create')->name('pengiriman.create');
     Route::get('/pengiriman/tambah/{id}','PengirimanController@create_id')->name('pengiriman.create_id');
-    Route::get('/pengiriman/edit/{id}','PengirimanController@edit')->name('pengiriman.edit');
     Route::post('/pengiriman/simpan','PengirimanController@store')->name('pengiriman.simpan');
     Route::post('/pengiriman/update','PengirimanController@update')->name('pengiriman.update');
     Route::delete('/pengiriman/delete/{id}','PengirimanController@destroy')->name('pengiriman.delete');
+    Route::get('/pengiriman/suratjalan/{id}','PengirimanController@surat_jalan')->name('pengiriman.cetak');
 
     //Quality Control
     Route::get('/quality','QualityController@index')->name('quality');
     Route::get('/quality/status/{id}','QualityController@status')->name('quality.status');
     Route::get('/quality/input/{id}','QualityController@input_barang')->name('quality.input');
     Route::get('/quality/tambah','QualityController@create')->name('quality.create');
-    Route::post('/quality/proses','QualityController@proses')->name('quality.proses');
+    Route::get('/quality/proses/{id}','QualityController@proses')->name('quality.proses');
     Route::get('/quality/edit/{id}','QualityController@edit')->name('quality.edit');
     Route::post('/quality/simpan','QualityController@store')->name('quality.simpan');
     Route::post('/quality/simpan/status','QualityController@status_update')->name('status.simpan');
@@ -86,7 +88,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/product/tambah','ProductController@create')->name('product.create');
     Route::get('/product/edit/{id}','ProductController@edit')->name('product.edit');
     Route::post('/product/simpan','ProductController@store')->name('product.simpan');
-    Route::post('/product/update','ProductConroller@update')->name('product.update');
+    Route::post('/product/update','ProductController@update')->name('product.update');
     Route::delete('/product/delete/{id}','ProductController@destroy')->name('product.delete');
 
     //Supplier
@@ -103,15 +105,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/customer/edit/{id}','CustomerController@edit')->name('customer.edit');
     Route::post('/customer/simpan','CustomerController@store')->name('customer.simpan');
     Route::post('/customer/update','CustomerController@update')->name('customer.update');
-    Route::delete('/customer/delete/{id}','CustomerController@destroy')->name('customer.delete');
+    Route::get('/customer/delete/{id}','CustomerController@destroy')->name('customer.delete');
 
     //Paket
-    Route::get('/paket','PaketController@index')->name('paket');
-    Route::get('/paket/tambah','PaketController@create')->name('paket.create');
-    Route::get('/paket/edit/{id}','PaketController@edit')->name('paket.edit');
-    Route::post('/paket/simpan','PaketController@store')->name('paket.simpan');
-    Route::post('/paket/update','PaketController@update')->name('paket.update');
-    Route::delete('/paket/delete/{id}','PaketController@destroy')->name('paket.delete');
+    Route::get('/aksesoris','AksesorisController@index')->name('aksesoris');
+    Route::get('/aksesoris/tambah','AksesorisController@create')->name('aksesoris.create');
+    Route::get('/aksesoris/edit/{id}','AksesorisController@edit')->name('aksesoris.edit');
+    Route::post('/aksesoris/simpan','AksesorisController@store')->name('aksesoris.simpan');
+    Route::post('/aksesoris/update','AksesorisController@update')->name('aksesoris.update');
+    Route::get('/aksesoris/delete/{id}','AksesorisController@destroy')->name('aksesoris.delete');
 
 });
 

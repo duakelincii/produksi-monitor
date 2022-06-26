@@ -33,7 +33,7 @@
             </div>
             <div class="form-group row">
                 <div class="col-sm-3 text-md-right">
-                    <label for="keluhan-utama"><strong>Nama Pesanan</strong></label>
+                    <label for="keluhan-utama"><strong>Nama Customer</strong></label>
                 </div>
                 <div class="col-sm-1 text-md-center">
                     :
@@ -88,7 +88,19 @@
                             <p class="text-md-left">@rupiah($data->harga_total)</p>
                         </div>
                     </div>
-
+                    @foreach ($payment as $value )
+                    <div class="form-group row">
+                        <div class="col-sm-3 text-md-right">
+                            <label for="keluhan-utama"><strong>Bukti Pembayaran</strong></label>
+                        </div>
+                        <div class="col-sm-1 text-md-center">
+                            :
+                        </div>
+                        <div class="col-sm-8">
+                            <img src="{{asset('bukti_bayar/'.$value->bukti_bayar)}}" alt="" width="50%" height="70%">
+                        </div>
+                    </div>
+                    @endforeach
 
             </div>
 

@@ -18,6 +18,7 @@
                             <th>Nama Customer</th>
                             <th>Tanggal Selesai</th>
                             <th>Status</th>
+                            <th>Tahapan</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -27,6 +28,7 @@
                             <th>Nama Customer</th>
                             <th>Tanggal Selesai</th>
                             <th>Status</th>
+                            <th>Tahapan</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -51,15 +53,21 @@
                                         <div class="badge badge-primary"> SIAP KIRIM </div>
                                     @elseif ($data->status == 'terkirim')
                                         <div class="badge badge-success"> TERKIRIM </div>
+                                    @elseif ($data->status == 'selesai')
+                                        <div class="badge badge-success"> SELESAI </div>
                                     @endif
                             </td>
                             <td>
                                 @if ($data->status == 'order baru')
-                                <a href="{{route('pesanan.edit',$data->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <a href="{{route('status.pesanan',$data->id)}}" class="btn btn-primary btn-sm">Proses</a>
+                                <a href="{{route('pesanan.proses',$data->id)}}" class="btn btn-warning btn-sm" title="Proses"><i class="fas fa-tasks"></i> Proses</a>
                                 @elseif ($data->status == 'terkirim')
-                                <a href="{{route('pesanan.payment',$data->id)}}" class="btn btn-success">Bayar</a>
-                                <a href="{{route('pesanan.detail',$data->id)}}" class="btn btn-primary">Detail</a>
+                                <a href="{{route('pesanan.payment',$data->id)}}" class="btn btn-sm btn-success" title="Bayar"><i class="fas fa-money-bill"></i></a>
+                                @endif
+                            </td>
+                            <td>
+                                <a href="{{route('pesanan.detail',$data->id)}}" class="btn btn-sm btn-secondary" title="Detail"><i class="fas fa-file-alt"></i></a>
+                                @if ($data->status == 'siap kirim')
+                                <a href="{{route('pesanan.invoice',$data->id)}}" target="-blank" class="btn btn-sm btn-info" title="PDF"><i class="fas fa-file-pdf"></i></a>
                                 @endif
                             </td>
 
@@ -71,32 +79,6 @@
         </div>
     </div>
 
-<!--Modal Konfirmasi Delete-->
-<div id="DeleteModal" class="modal fade text-danger" role="dialog">
-    <div class="modal-dialog modal-dialog modal-dialog-centered ">
-      <!-- Modal content-->
-      <form action="" id="deleteForm" method="post">
-        <div class="modal-content">
-          <div class="modal-header bg-danger">
-            <h4 class="modal-title text-center text-white">Konfirmasi Penghapusan</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          </div>
-          <div class="modal-body">
-            @csrf
-            <p class="text-center">Apakah anda yakin untuk menghapus pesanan? </p>
-          </div>
-          <div class="modal-footer">
-            <center>
-              <button type="button" class="btn btn-success" data-dismiss="modal">Tidak, Batal</button>
-              <button type="button" name="" class="btn btn-danger" data-dismiss="modal" onclick="formSubmit()">Ya, Hapus</button>
-            </center>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-  <!--End Modal-->
-
     <script>
         $(document).ready(function() {
             $('#pesanan').DataTable({
@@ -105,7 +87,5 @@
                 ]
             });
         });
-
-
     </script>
 @endsection

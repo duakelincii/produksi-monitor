@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Aksesoris;
 use App\Customer;
 use App\Paket;
 use App\Payment;
@@ -11,7 +12,8 @@ use App\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
+use Alert;
+use PDF;
 
 class PesananController extends Controller
 {
@@ -22,19 +24,30 @@ class PesananController extends Controller
         return view('pesanan.index',compact('datas'));
     }
 
+    public function proses($id)
+    {
+        $data = Pesanan::where('id',$id);
+        $data->update([
+            'status' => 'proses'
+        ]);
+        Alert::success('Success','Pesanan Berhasil diproses');
+        return redirect(route('pesanan'));
+    }
+
     public function create()
     {
         $kode = 'OR-'.rand();
         $customers = Customer::get();
         $products = Product::get();
-        $pakets = Paket::get();
-        return view('pesanan.create',compact('kode','customers','products','pakets'));
+        $aksesoris = Aksesoris::get();
+        return view('pesanan.create',compact('kode','customers','products','aksesoris'));
     }
 
     public function detail($id)
     {
         $datas = Pesanan::where('id',$id)->get();
-        return view('pesanan.detail',compact('datas'));
+        $payment = Payment::where('id_pesanan',$id)->get();
+        return view('pesanan.detail',compact('datas','payment'));
     }
 
     public function store(Request $request)
@@ -53,10 +66,12 @@ class PesananController extends Controller
             $pesanan->tgl_selesai = $data['tgl_selesai'];
             $pesanan->status = 'order baru';
             $pesanan->save();
-
+            $dt_produk = Product::where('id', $request->id_product)->first();
+            $sisa_stock = $dt_produk->stock - $request->quantity;
+            Product::where('id',$request->id_product)->update(['stock' => $sisa_stock]);
             DB::commit();
-            $pesan ='pesanan Berhasil Ditambahkan';
-            return redirect(route('pesanan'))->with('pesan',$pesan);
+            Alert::success('Success','Pesanan Berhasil Dibuat');
+            return redirect(route('pesanan'));
 
         } catch (\Throwable $th) {
            DB::rollback();
@@ -88,16 +103,16 @@ class PesananController extends Controller
             'status'  => $request->status,
         ]);
 
-        $pesan ='pesanan Berhasil Diupdate...!!!';
-        return redirect(route('pesanan'))->with('pesan',$pesan);
+        Alert::success('Success','Pesanan Berhasil Diupdate');
+        return redirect(route('pesanan'));
     }
 
     public function destroy($id)
     {
         $data = Pesanan::where('id',$id)->get();
         $data->delete();
-        $pesan = 'pesanan Berhasil Dihapus...!!!';
-        return redirect(route('pesanan'))->with('error',$pesan);
+        Alert::warning('Success','Pesanan Berhasil Dibuat');
+        return redirect(route('pesanan'));
     }
 
     public function status($id){
@@ -141,7 +156,7 @@ class PesananController extends Controller
         try {
             $datas = Pesanan::where('id',$request->id)->get();
             $image = $request->bukti_bayar;
-            $imageName = time() . '.' . $image->extension();
+            $imageName = $request->kode . '.' . $image->extension();
             $image->move(public_path('bukti_bayar'), $imageName);
             Payment::insert([
                 'id_pesanan'   => $request->id_pesanan,
@@ -152,14 +167,21 @@ class PesananController extends Controller
                 'bukti_bayar' => $imageName,
             ]);
             Pesanan::where('id',$request->id_pesanan)->update([
-                'status' => 'proses'
+                'status' => 'selesai'
             ]);
             DB::commit();
-            $pesan = 'Pembayaran Anda Berhasil';
-            return redirect(route('pesanan'))->with('pesan',$pesan);
+            Alert::success('Success','Pembayaran Berhasil Dilakukan');
+            return redirect(route('pesanan'));
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
         }
+    }
+
+    public function invoice($id)
+    {
+        $datas = Pesanan::findOrFail($id);
+        $pdf = PDF::loadView('pdf.invoice',compact('datas'))->setPaper('A4','potrait');
+        return $pdf->stream();
     }
 }

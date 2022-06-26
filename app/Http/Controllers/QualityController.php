@@ -9,19 +9,20 @@ use App\Qualitydetails;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Alert;
 
 class QualityController extends Controller
 {
 
     public function index()
     {
-        $datas = QualityControl::get();
+        $datas = Pesanan::get();
         return view('qualitycontrol.index',compact('datas'));
     }
 
     public function status($id)
     {
-        $datas = QualityControl::where('id',$id)->get();
+        $datas = Pesanan::where('id',$id)->get();
         return view('qualitycontrol.status',compact('datas'));
     }
 
@@ -31,24 +32,21 @@ class QualityController extends Controller
         return view('qualitycontrol.create',compact('datas'));
     }
 
-    public function proses(Request $request)
+    public function proses($id)
     {
-        $items = $request->get('items');
-        dd($items);
+        $data = Pesanan::where('id',$id);
+        $data->update([
+            'status' => 'cuting'
+        ]);
+        Alert::success('Success','Quality Control Berhasil Dibuat');
+        return redirect(route('quality'));
     }
 
     public function status_update(Request $request)
     {
-        QualityControl::updateOrCreate(
-            [
-                'id_pesanan' => $request->id_pesanan
-            ],[
-                'id_product'    => $request->id_product,
-                'status'    => $request->status,
-                'created_at'    => Carbon::now(),
-            ]
-        );
-            Pesanan::where('id',$request->id_pesanan)->update(['status' => $request->status]);
+            Pesanan::where('id',$request->id)->update([
+                'status' => $request->status
+            ]);
             $pesan ='Update Proses Pesanan Berhasil...!!!';
             return redirect(route('quality'))->with('pesan',$pesan);
 
@@ -56,42 +54,34 @@ class QualityController extends Controller
 
     public function input_barang($id)
     {
-            $datas = QualityControl::where('id',$id)->get();
-            $pesanans = Pesanan::get();
+            $datas = Pesanan::where('id',$id)->get();
             $products = Product::get();
-            return view('qualitycontrol.input',compact('datas','products','pesanans'));
+            return view('qualitycontrol.input',compact('datas','products'));
     }
 
     public function store(Request $request)
     {
        DB::beginTransaction();
        try {
-        QualityControl::where('id',$request->id)->update([
-            'id_pesanan'    => $request->id_pesanan,
+        QualityControl::insert([
+            'id_pesanan'    => $request->id,
             'id_product'    => $request->id_product,
             'barang_ready'    => $request->barang_ready,
             'barang_rusak'    => $request->barang_rusak,
-            'ket'    => $request->keterangan,
-            'status'        => 'selesai',
+            'ket'           => $request->keterangan,
+            'created_at' => Carbon::now()
         ]);
 
         $dt_produk = Product::where('id', $request->id_product)->first();
         $kurangi_stok = $dt_produk->stock - $request->barang_ready;
-        $harga = Pesanan::where('id',$request->id_pesanan)->update([
+        Pesanan::where('id',$request->id)->update([
             'barang_ready'  => $request->barang_ready,
             'harga_total'   => $request->barang_ready * $dt_produk->harga_jual,
             'status' => 'siap kirim'
         ]);
-
-        if($kurangi_stok == 0){
-            Product::where('id',$request->id_product)->update([
-                'stock' => $kurangi_stok,
-                'status' => 'sold'
-            ]);
-        }
             DB::commit();
-        $pesan = 'Barang Sudah Berhasil Melewati Proses Quality Control....!!!';
-        return redirect(route('quality'))->with('pesan',$pesan);
+            Alert::success('Success','Barang Sudah Berhasil Melewati Proses Quality Control....!!!');
+        return redirect(route('quality'));
        } catch (\Throwable $th) {
            DB::rollback();
             throw $th;

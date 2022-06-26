@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Supplier;
 use Illuminate\Http\Request;
+use Alert;
 
 class SupplierController extends Controller
 {
@@ -37,14 +38,14 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         Supplier::insert([
-            'nama'  => $request->nama,
+            'nama'  => strtoupper($request->nama),
             'email'  => $request->email,
             'alamat'  => $request->alamat,
             'phone'  => $request->phone,
         ]);
 
-        $pesan ='Supplier Berhasil Ditambahkan';
-        return redirect(route('supplier'))->with('pesan',$pesan);
+        Alert::success('Success','Supplier Berhasil ditambahkan');
+        return redirect(route('supplier'));
     }
 
     /**
@@ -80,14 +81,14 @@ class SupplierController extends Controller
     public function update(Request $request)
     {
         Supplier::where('id',$request->id)->update([
-            'nama'  => $request->nama,
+            'nama'  => strtoupper($request->nama),
             'email'  => $request->email,
             'alamat'  => $request->alamat,
             'phone'  => $request->phone,
         ]);
 
-        $pesan ='Supplier Berhasil Diupdate...!!!';
-        return redirect(route('supplier'))->with('pesan',$pesan);
+        Alert::success('Success','Supplier Berhasil diupdate');
+        return redirect(route('supplier'));
     }
 
     /**
@@ -100,7 +101,7 @@ class SupplierController extends Controller
     {
         $data = Supplier::findOrFail($id);
         $data->delete();
-        $pesan = 'Supplier Berhasil Dihapus...!!!';
-        return redirect(route('supplier'))->with('error',$pesan);
+        Alert::warning('Success','Supplier Berhasil dihapus');
+        return redirect(route('supplier'));
     }
 }

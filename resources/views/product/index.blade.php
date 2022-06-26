@@ -10,7 +10,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="product" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="produk" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -18,7 +18,6 @@
                             <th>Stock</th>
                             <th>Harga Beli</th>
                             <th>Harga Jual</th>
-                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -29,7 +28,6 @@
                             <th>Stock</th>
                             <th>Harga Beli</th>
                             <th>Harga Jual</th>
-                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -39,20 +37,15 @@
                             <td>{{$loop->iteration}}</td>
                             <td>{{$data->nama}}</td>
                             <td>{{$data->stock}}</td>
-                            <td>{{$data->harga_beli}}</td>
-                            <td>{{$data->harga_jual}}</td>
+                            <td>@rupiah($data->harga_beli)</td>
+                            <td>@rupiah($data->harga_jual)</td>
                             <td>
-                                @if ($data->status == 'ready')
-                                <div class="badge badge-success"> Ready </div>
-                            @elseif ($data->status == 'sold')
-                                <div class="badge badge-danger"> Sold </div>
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{route('product.edit',$data->id)}}" class="btn btn-primary">Edit</a>
+                                <a href="{{route('product.edit',$data->id)}}" class="btn btn-sm btn-primary" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="{{route('product.delete',$data->id)}}" class="btn btn-sm btn-danger" title="Hapus"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                         @endforeach
+
                     </tbody>
                 </table>
             </div>
@@ -60,7 +53,7 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('#product').DataTable();
+            $('#produk').DataTable();
         });
     </script>
 @endsection

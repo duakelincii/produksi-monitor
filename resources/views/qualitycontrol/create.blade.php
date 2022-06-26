@@ -37,8 +37,7 @@
                                     @endif
                             </td>
                             <td>
-                                <button type="submit"  class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
-                                onClick="ShowModal(this)" data-id="{{$data->id}}">Proses</button>
+                                <a href="{{route('quality.proses',$data->id)}}" class="btn btn-sm btn-warning">Proses</a>
                             </td>
                         </tr>
                         @endforeach
@@ -48,71 +47,9 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Update Status Proses Pesanan</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form action="{{route('status.simpan')}}" method="POST">
-                  @csrf
-                  @foreach ($datas as $data )
-                  <input type="hidden" name="id_pesanan" value="{{$data->id}}">
-                  <input type="hidden" name="id_product" value="{{$data->id_product}}">
-                  <div class="form-group row">
-                      <div class="col-sm-12">
-                          <label for="">Status Quality Control</label>
-                          <div class="input-group mb-2">
-                              <input type="text" class="form-control" value="{{$data->customer->nama}}" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                <div class="form-group row">
-                    <div class="col-sm-12">
-                        <label for="">Status Quality Control</label>
-                        <div class="input-group mb-2">
-                            <select name="status" id="" class="form-control">
-                                <option value="">-- Pilih Proses --</option>
-                                <option value="cuting">Cutting</option>
-                                <option value="jahit">Jahit</option>
-                                <option value="finishing">Finishing</option>
-                            </select>
-                        </div>
-                    </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <div class="form-group row">
-                        <div class="col-sm-6">
-                            <a href="" class="btn btn-danger btn-block btn"> Kembali
-                            </a>
-                        </div>
-                        <div class="col-sm-6">
-                            <button type="submit" class="btn btn-primary btn-block"> Simpan
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <script>
         $(document).ready(function() {
             $('#pesanan').DataTable();
         });
-
-        function ShowModal(elem){
-            var dataId = $(elem).data("id");
-        }
     </script>
 @endsection

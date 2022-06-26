@@ -40,7 +40,8 @@
                             <td>{{$data->email}}</td>
                             <td>{{$data->alamat}}</td>
                             <td>
-                                <a href="{{route('customer.edit',$data->id)}}" class="btn btn-primary">Edit</a>
+                                <a href="{{route('customer.edit',$data->id)}}" class="btn btn-sm btn-primary" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="{{route('customer.delete',$data->id)}}" class="btn btn-sm btn-danger" title="Hapus"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                         @endforeach

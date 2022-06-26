@@ -61,7 +61,7 @@
                     <div class="col-sm-6">
                         <label for="">Nama Rekening</label>
                         <div class="input-group mb-2">
-                            <input type="datetime-local" class="form-control" name="nama_rekening" required>
+                            <input type="text" class="form-control" name="nama_rekening" required>
                         </div>
                     </div>
                     <div class="col-sm-6">

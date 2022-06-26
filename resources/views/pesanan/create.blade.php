@@ -33,27 +33,14 @@
                             <select name="id_product" id="" class="form-control">
                                 <option value="">Pilih Product</option>
                                 @foreach ($products as $data )
-                                    @if ($data->status != 'sold')
+                                    @if ($data->stock != 0)
                                     <option value="{{$data->id}}">{{$data->nama}} / {{$data->stock}} Unit</option>
                                     @endif
                                 @endforeach
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-3">
-                        <label for="">Paket Aksesoris</label>
-                        <div class="input-group mb-2">
-                            <select name="id_product" id="" class="form-control">
-                                <option value="">Pilih Paket</option>
-                                @foreach ($pakets as $data )
-                                    @if ($data->status != 'sold')
-                                    <option value="{{$data->id}}">{{$data->nama_paket}}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-6">
                         <label for="">Quantity</label>
                         <div class="input-group mb-2">
                             <input type="number" class="form-control " name="quantity" required>

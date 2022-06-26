@@ -103,16 +103,19 @@ class PurchasingController extends Controller
             ]);
             $dt_produk = Product::where('id', $request->id_product)->first();
             $tambah_stock = $dt_produk->stock + $request->quantity;
+            $margin = $request->harga_beli * $request->margin_harga/100;
+            $harga_jual = $margin + $request->harga_beli;
             Purchasing::where('id',$request->id)->update([
                 'status' => 'selesai',
             ]);
             Product::where('id',$request->id_product)->update([
                 'stock' => $tambah_stock,
                 'harga_beli'    => $request->harga_beli,
+                'harga_jual'    => $harga_jual,
             ]);
 
             $pesan = 'Memasukan Stock Berhasil..!!!';
-            return redirect(route('product'))->with('pesan',$pesan);
+            return redirect(route('purchasing'))->with('pesan',$pesan);
     }
     /**
      * Show the form for editing the specified resource.

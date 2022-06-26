@@ -9,17 +9,12 @@
                 @csrf
                 @foreach ($datas as $data )
                 <input type="hidden" name="id" value="{{$data->id}}" id="">
+                <input type="hidden" name="id_product" value="{{$data->id_product}}" id="">
                 <div class="form-group row">
                     <div class="col-sm-12">
                         <label for="">Pilih Pesanan</label>
                         <div class="input-group mb-2">
-                            <select name="id_pesanan" id="" class="form-control" readonly>
-                                <option value="">Pilih pesanan</option>
-                                @foreach ($pesanans as $pesanan)
-                                    <option value="{{$pesanan->id}}" {{ $pesanan->id == $data->id_pesanan ? 'selected' : '' }}>
-                                    {{$pesanan->customer->nama}}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" value="{{$data->customer->nama}}" class="form-control" disabled readonly>
                         </div>
                     </div>
                 </div>
@@ -27,19 +22,13 @@
                     <div class="col-sm-6">
                         <label for="">Product</label>
                         <div class="input-group mb-2">
-                            <select name="id_product" id="" class="form-control" readonly>
-                                <option value="">Pilih Product</option>
-                                @foreach ($products as $product)
-                                    <option value="{{$product->id}}" {{ $product->id == $data->id_product ? 'selected' : '' }}>
-                                    {{$product->nama}}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" class="form-control" value="{{$data->product->nama}}" disabled readonly>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <label for="">Jumlah Pesanan</label>
                         <div class="input-group mb-2">
-                            <input type="number" class="form-control" value="{{$data->pesanan->quantity}}" readonly>
+                            <input type="number" class="form-control" value="{{$data->quantity}}" readonly>
                         </div>
                     </div>
                 </div>

@@ -17,4 +17,8 @@ class Pengiriman extends Model
     {
         return $this->belongsTo(Customer::class,'id_customer','id');
     }
+    public function product()
+    {
+        return $this->belongsTo(product::class,'id_product','id');
+    }
 }

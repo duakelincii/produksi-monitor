@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Customer;
 use Illuminate\Http\Request;
+use Alert;
 
 class CustomerController extends Controller
 {
@@ -37,14 +38,14 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         Customer::insert([
-            'nama'  => $request->nama,
+            'nama'  => strtoupper($request->nama),
             'email'  => $request->email,
             'alamat'  => $request->alamat,
             'phone'  => $request->phone,
         ]);
 
-        $pesan ='Customer Berhasil Ditambahkan';
-        return redirect(route('customer'))->with('pesan',$pesan);
+        Alert::success('Success','Customer Berhasil ditambahkan');
+        return redirect(route('customer'));
     }
 
     /**
@@ -80,14 +81,13 @@ class CustomerController extends Controller
     public function update(Request $request)
     {
         Customer::where('id',$request->id)->update([
-            'nama'  => $request->nama,
+            'nama'  => strtoupper($request->nama),
             'email'  => $request->email,
             'alamat'  => $request->alamat,
             'phone'  => $request->phone,
         ]);
-
-        $pesan ='Customer Berhasil Diupdate...!!!';
-        return redirect(route('customer'))->with('pesan',$pesan);
+        Alert::success('Success','Customer Berhasil diupdate');
+        return redirect(route('customer'));
     }
 
     /**
@@ -98,9 +98,9 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        $data = Customer::findOrFail($id);
+        $data = Customer::where('id',$id);
         $data->delete();
-        $pesan = 'Customer Berhasil Dihapus...!!!';
-        return redirect(route('customer'))->with('error',$pesan);
+        Alert::warning('Delete','Customer Berhasil dihapus');
+        return redirect(route('customer'));
     }
 }
