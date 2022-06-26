@@ -38,15 +38,16 @@ class LaporanController extends Controller
         return view('laporan.pendapatan',compact('datas'));
     }
 
-    public function pendapatanexport(Request $request)
+    public function pendapatanpdf(Request $request)
     {
         if($request->start_date == null || $request->end_date == null)
         {
-            $datas = Pesanan::all();
+            $datas = Pesanan::where('status' == 'selesai')->all();
         }else{
-            $datas = Pesanan::whereBetween('tgl_selesai',[$request->start_date,$request->end_date])->get();
+            $datas = Pesanan::where('status' == 'selesai')->
+                whereBetween('tgl_selesai',[$request->start_date,$request->end_date])->get();
         }
-        $pdf = PDF::loadView('pdf.pesanan',compact('datas'))->setPaper('A4','landscape');
+        $pdf = PDF::loadView('pdf.pendapatan',compact('datas'))->setPaper('A4','landscape');
         return $pdf->stream();
     }
 

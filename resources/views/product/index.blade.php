@@ -14,6 +14,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Nama Bahan</th>
                             <th>Nama Product</th>
                             <th>Stock</th>
                             <th>Harga Beli</th>
@@ -24,6 +25,7 @@
                     <tfoot>
                         <tr>
                             <th>No</th>
+                            <th>Nama Bahan</th>
                             <th>Nama Product</th>
                             <th>Stock</th>
                             <th>Harga Beli</th>
@@ -35,6 +37,7 @@
                         @foreach ($datas as $data )
                         <tr>
                             <td>{{$loop->iteration}}</td>
+                            <td>{{$data->nama_bahan}}</td>
                             <td>{{$data->nama}}</td>
                             <td>{{$data->stock}}</td>
                             <td>@rupiah($data->harga_beli)</td>

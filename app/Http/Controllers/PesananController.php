@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Alert;
+use App\Pesanantambahan;
 use PDF;
 
 class PesananController extends Controller
@@ -69,6 +70,23 @@ class PesananController extends Controller
             $dt_produk = Product::where('id', $request->id_product)->first();
             $sisa_stock = $dt_produk->stock - $request->quantity;
             Product::where('id',$request->id_product)->update(['stock' => $sisa_stock]);
+            if(count($request->id_aksesoris) > 0){
+
+                foreach ($request->id_aksesoris as $item=>$v)
+                {
+                    $dt_aksesoris = Aksesoris::where('id', $request->id_aksesoris[$item])->first();
+                    $kurangi_stok = $dt_aksesoris->stock - $request->id_aksesoris[$item];
+                    $detail[] = array(
+                        'id_pesanan'  => $pesanan->id,
+                        'id_product'    => $request->id_product,
+                        'id_aksesoris' => $request->id_aksesoris[$item],
+                        'qty_aksesoris' => $request->qty_aksesoris[$item],
+                    );
+                }
+                Pesanantambahan::insert($detail);
+                Aksesoris::where('id',$request->id_aksesoris[$item])->update(['stock' => $kurangi_stok]);
+            }
+
             DB::commit();
             Alert::success('Success','Pesanan Berhasil Dibuat');
             return redirect(route('pesanan'));

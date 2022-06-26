@@ -2,19 +2,19 @@
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header d-sm-flex align-items-center justify-content-between py-3 ">
-            <h6 class="m-0 font-weight-bold text-primary">Data aksesrosi</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Data Aksesoris</h6>
             <div>
                 <a href="{{route('aksesoris.create')}}" class="d-none d-sm-inline-block btn btn-primary btn-sm shadow-sm">
-                    <i class="fas fa-plus fa-sm"></i> Tambah aksesrosi</a>
+                    <i class="fas fa-plus fa-sm"></i> Tambah Aksesoris</a>
             </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="aksesrosi" width="100%" cellspacing="0">
+                <table class="table table-bordered" id="Aksesoris" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama aksesrosi</th>
+                            <th>Nama Aksesoris</th>
                             <th>Stock</th>
                             <th>Harga</th>
                             <th>Action</th>
@@ -23,7 +23,7 @@
                     <tfoot>
                         <tr>
                             <th>No</th>
-                            <th>Nama aksesrosi</th>
+                            <th>Nama Aksesoris</th>
                             <th>Stock</th>
                             <th>Harga</th>
                             <th>Action</th>
@@ -50,7 +50,7 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('#aksesrosi').DataTable();
+            $('#Aksesoris').DataTable();
         });
     </script>
 @endsection

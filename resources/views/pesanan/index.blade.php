@@ -16,6 +16,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Customer</th>
+                            <th>Tanggal Pesen</th>
                             <th>Tanggal Selesai</th>
                             <th>Status</th>
                             <th>Tahapan</th>
@@ -26,6 +27,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Customer</th>
+                            <th>Tanggal Pesen</th>
                             <th>Tanggal Selesai</th>
                             <th>Status</th>
                             <th>Tahapan</th>
@@ -37,7 +39,8 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$data->customer->nama}}</td>
-                            <td>{{ \Carbon\Carbon::parse($data->tgl_selesai)->format('d-m-Y')}}</td>
+                            <td>{{\Carbon\Carbon::parse($data->tgl_order)->isoFormat('D MMMM Y')}}</td>
+                            <td>{{\Carbon\Carbon::parse($data->tgl_selesai)->isoFormat('D MMMM Y')}}</td>
                             <td>
                                 @if ($data->status == 'order baru')
                                         <div class="badge badge-danger"> ORDER BARU </div>
@@ -61,7 +64,7 @@
                                 @if ($data->status == 'order baru')
                                 <a href="{{route('pesanan.proses',$data->id)}}" class="btn btn-warning btn-sm" title="Proses"><i class="fas fa-tasks"></i> Proses</a>
                                 @elseif ($data->status == 'terkirim')
-                                <a href="{{route('pesanan.payment',$data->id)}}" class="btn btn-sm btn-success" title="Bayar"><i class="fas fa-money-bill"></i></a>
+                                <a href="{{route('pesanan.payment',$data->id)}}" class="btn btn-sm btn-success" title="Bayar"><i class="fas fa-money-bill"></i> Payment</a>
                                 @endif
                             </td>
                             <td>

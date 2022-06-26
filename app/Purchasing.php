@@ -18,4 +18,9 @@ class Purchasing extends Model
     {
         return $this->belongsTo(Product::class,'id_product','id');
     }
+
+    public function tambahan()
+    {
+        return $this->belongsTo(Purchasingtambahan::class,'id_purchasing','id');
+    }
 }

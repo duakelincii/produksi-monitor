@@ -8,7 +8,11 @@
             <form class="user" action="{{route('product.simpan')}}" method="post">
                 @csrf
                 <div class="form-group row">
-                    <div class="col-sm-12 mb-3 mb-sm-0">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <label for="nama_customer">Nama Bahan</label>
+                        <input type="text" name="nama_bahan" class="form-control" placeholder="Masukan Nama Product">
+                    </div>
+                    <div class="col-sm-6 mb-3 mb-sm-0">
                         <label for="nama_customer">Nama Product</label>
                         <input type="text" name="nama" class="form-control" placeholder="Masukan Nama Product">
                     </div>

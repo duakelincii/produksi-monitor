@@ -8,10 +8,11 @@
 </head>
 <body>
         <div style="display: flex; align-items: center; margin-bottom:-30px">
-            <h2 style="text-align:center;">Laporan Pendapatan </h2>
+            <h2 style="text-align:center;">Laporan Pendapatan</h2>
+            <h2 style="text-align:center;">PT CIPTA GRACIA LESTARI</h2>
         </div>
         <br>
-    <table style="text-align: center; " border="1" cellspacing="0" cellpadding="8" width="100%">
+    <table style="text-align: center; " border="1" cellspacing="0" cellpadding="5" width="100%">
         <thead>
             <tr>
                 <th>No</th>
@@ -41,8 +42,8 @@
             @endforeach
         </tbody>
         <tr>
-            <td colspan="8">Total</td>
-            <td>@rupiah($data->sum('harga_total'))</td>
+            <td colspan="8"><b>TOTAL</b></td>
+            <td><b>@rupiah($data->sum('harga_total'))</b></td>
         </tr>
     </table>
 

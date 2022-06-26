@@ -44,20 +44,62 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-sm-6">
-                        <label for="">Harga Beli</label>
+                    <div class="col-sm-4">
+                        <label for="">Harga Beli Sebelumnya</label>
                         <div class="input-group mb-2">
-                            <input type="number" name="harga_beli" class="form-control">
+                            <input type="number" value="{{$data->product->harga_beli}}" class="form-control" readonly disabled>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <label for="">Margin Harga</label>
+                    <div class="col-sm-4">
+                        <label for="">Harga Beli</label>
+                        <div class="input-group mb-2">
+                            <input type="number" name="harga_beli" value="{{$data->product->harga_beli}}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="">Margin Harga %</label>
                         <div class="input-group mb-2">
                             <input type="number" name="margin_harga" class="form-control">
                         </div>
                     </div>
                 </div>
                 @endforeach
+
+
+                <div class="card">
+                    <div class="card-header">
+                        Aksesoris
+                    </div>
+
+                    <div class="card-body">
+                        <table class="table" id="products_table">
+                            <thead>
+                                <tr>
+                                    <th>Aksesoris</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($tambahan as $data )
+                                <tr id="product0">
+                                    <td>
+                                        <input type="hidden" name="id_acc[]" value="{{$data->id_aksesoris}}">
+                                        <input type="text" value="{{$data->aksesoris->nama_aksesoris}}" class="form-control" readonly disabled>
+                                    </td>
+                                    <td>
+                                        <input type="number" value="{{$data->qty_aksesoris}}" class="form-control" readonly disabled />
+                                    </td>
+                                    <td>
+                                        <input type="number" name="qty_aksesoris[]" class="form-control" value="1" />
+                                    </td>
+                                </tr>
+                                <tr id="product1"></tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <a href="{{route('purchasing')}}" class="btn btn-danger btn-block btn">
@@ -73,4 +115,5 @@
             </form>
         </div>
     </div>
+
 @endsection

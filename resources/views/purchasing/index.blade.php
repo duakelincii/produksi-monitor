@@ -36,22 +36,23 @@
                             <td>{{$data->supplier->nama}}</td>
                             <td>{{ \Carbon\Carbon::parse($data->tgl_tempo)->format('d-m-Y')}}</td>
                             <td>
-                                @if ($data->status == 'belum lunas')
+                                    @if ($data->status == 'belum lunas')
                                         <div class="badge badge-danger"> Belum Lunas </div>
-                                    @elseif ($data->status == 'jatuh tempo')
-                                        <div class="badge badge-warning"> Jatuh Tempo </div>
+                                    @elseif($data->status == 'po baru')
+                                        <div class="badge badge-danger"> PO BARU </div>
                                     @elseif ($data->status == 'lunas')
                                         <div class="badge badge-success"> Lunas </div>
                                     @elseif ($data->status == 'selesai')
                                         <div class="badge badge-success"> Selesai </div>
+                                    @elseif ($data->tgl_tempo > 1)
+                                        <div class="badge badge-warning"> Jatuh Tempo </div>
                                     @endif
                             </td>
                             <td>
-                                @if ($data->status =='belum lunas' && 'jatuh tempo')
-                                <a href="{{route('purchasing.edit',$data->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <a href="{{route('purchasing.payment',$data->id)}}" class="btn btn-warning btn-sm">Payment</a>
-                                @elseif ($data->status == 'lunas')
-                                <a href="{{route('purchasing.stockin',$data->id)}}" class="btn btn-success btn-sm">stock In</a>
+                                @if ($data->status =='po baru')
+                                <a href="{{route('purchasing.stockin',$data->id)}}" class="btn btn-success btn-sm">Stock In</a>
+                                @elseif ($data->status == 'belum lunas')
+                                <a href="{{route('purchasing.payment',$data->id)}}" class="btn btn-sm btn-success" title="Bayar"><i class="fas fa-money-bill"></i> Payment</a>
                                 @endif
                             </td>
                         </tr>

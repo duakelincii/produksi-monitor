@@ -11,7 +11,10 @@ use App\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Laravel\Ui\Presets\React;
+use Alert;
+use App\Aksesoris;
+use App\Purchasingtambahan;
+use PDF;
 
 class PurchasingController extends Controller
 {
@@ -31,7 +34,8 @@ class PurchasingController extends Controller
         $kode = 'PO-'.rand();
         $suppliers = Supplier::get();
         $products = Product::get();
-        return view('purchasing.create',compact('kode','suppliers','products'));
+        $aksesoris = Aksesoris::get();
+        return view('purchasing.create',compact('kode','suppliers','products','aksesoris'));
     }
 
     /**
@@ -45,20 +49,38 @@ class PurchasingController extends Controller
         DB::beginTransaction();
         try {
             $dt_produk = Product::where('id', $request->id_product)->first();
-            $harga_total = $request->quantity ;
-            Purchasing::insert([
-                'kode'  => $request->kode,
-                'id_supplier'  => $request->id_supplier,
-                'id_product'  => $request->id_product,
-                'quantity'  => $request->quantity,
-                'harga_barang'  => $request->quantity * $dt_produk->harga_beli,
-                'tgl_order'  => $request->tgl_order,
-                'tgl_tempo'  => $request->tgl_tempo,
-                'status'  => 'belum lunas',
-            ]);
+            $data = $request->all();
+            $purche = new Purchasing();
+            $purche->kode = $data['kode'];
+            $purche->id_product = $data['id_product'];
+            $purche->id_supplier = $data['id_supplier'];
+            $purche->quantity = $data['quantity'];
+            $purche->harga_barang = $data['quantity'] * $dt_produk->harga_beli;
+            $purche->tgl_order = $data['tgl_order'];
+            $purche->tgl_tempo = $data['tgl_tempo'];
+            $purche->status = 'po baru';
+            $purche->save();
+
+            if(count($request->id_aksesoris) > 0){
+
+                foreach ($request->id_aksesoris as $item=>$v)
+                {
+                    $dt_aksesoris = Aksesoris::where('id', $request->id_aksesoris[$item])->first();
+                    $kurangi_stok = $dt_aksesoris->stock - $request->id_aksesoris[$item];
+                    $detail[] = array(
+                        'id_purchasing'  => $purche->id,
+                        'id_product'    => $request->id_product,
+                        'id_aksesoris' => $request->id_aksesoris[$item],
+                        'qty_aksesoris' => $request->qty_aksesoris[$item],
+                    );
+                }
+                Purchasingtambahan::insert($detail);
+                Aksesoris::where('id',$request->id_aksesoris[$item])->update(['stock' => $kurangi_stok]);
+            }
+
             DB::commit();
-        $pesan ='purchasing Berhasil Ditambahkan';
-        return redirect(route('purchasing'))->with('pesan',$pesan);
+            Alert::success('Success','PO Berhasil Dibuat');
+        return redirect(route('purchasing'));
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
@@ -90,32 +112,58 @@ class PurchasingController extends Controller
     {
        $datas = Purchasing::where('id',$id)->get();
        $products = Product::get();
-        return view('purchasing.stockin',compact('datas','products'));
+       $aksesoris= Aksesoris::get();
+       $tambahan = Purchasingtambahan::where('id_purchasing',$id)->get();
+        return view('purchasing.stockin',compact('datas','products','aksesoris','tambahan'));
     }
 
     public function stockin_store(Request $request)
     {
+           DB::beginTransaction();
+           try {
+
             StockIn::insert([
                 'id_purchasing' => $request->id_purchasing,
                 'id_product'    => $request->id_product,
                 'quantity'      => $request->quantity,
                 'harga_beli'    => $request->harga_beli,
             ]);
+
+            Purchasing::where('id',$request->id)->update([
+                'status' => 'belum lunas',
+            ]);
+
             $dt_produk = Product::where('id', $request->id_product)->first();
             $tambah_stock = $dt_produk->stock + $request->quantity;
             $margin = $request->harga_beli * $request->margin_harga/100;
             $harga_jual = $margin + $request->harga_beli;
-            Purchasing::where('id',$request->id)->update([
-                'status' => 'selesai',
-            ]);
+
             Product::where('id',$request->id_product)->update([
-                'stock' => $tambah_stock,
-                'harga_beli'    => $request->harga_beli,
-                'harga_jual'    => $harga_jual,
+                    'stock'         => $tambah_stock,
+                    'harga_beli'    => $request->harga_beli,
+                    'harga_jual'    => $harga_jual,
             ]);
 
-            $pesan = 'Memasukan Stock Berhasil..!!!';
-            return redirect(route('purchasing'))->with('pesan',$pesan);
+                if(count($request->id_acc) > 0){
+
+                    foreach ($request->id_acc as $item=>$v)
+                    {
+                        $dt_aksesoris = Aksesoris::where('id', $request->id_acc[$item])->first();
+                        $tambah_qty = $dt_aksesoris->stock + $request->qty_aksesoris[$item];
+                    }
+                    Aksesoris::where('id',$request->id_acc[$item])->update(['stock' => $tambah_qty]);
+                }
+
+
+            DB::commit();
+            Alert::success('Success','Memasukan Stock Berhasil..!!!');
+            return redirect(route('purchasing'));
+           } catch (\Throwable $th) {
+            DB::rollBack();
+            Alert::warning('Gagal',$th);
+            return $th ;
+           }
+
     }
     /**
      * Show the form for editing the specified resource.
@@ -186,7 +234,7 @@ class PurchasingController extends Controller
         try {
             $datas = Purchasing::where('id',$request->id)->get();
             $image = $request->bukti_bayar;
-            $imageName = "PO" . time() . '.' . $image->extension();
+            $imageName = $request->kode . '.' . $image->extension();
             $image->move(public_path('bukti_bayar'), $imageName);
             Payment::insert([
                 'id_purchasing'   => $request->id_purchasing,
@@ -200,8 +248,8 @@ class PurchasingController extends Controller
                 'status' => 'lunas'
             ]);
             DB::commit();
-            $pesan = 'Pembayaran Anda Berhasil';
-            return redirect(route('purchasing'))->with('pesan',$pesan);
+            Alert::success('Success','Pembayaran Anda Berhasil');
+            return redirect(route('purchasing'));
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
@@ -213,6 +261,7 @@ class PurchasingController extends Controller
         $data = Purchasing::findOrFail($id);
         $data->delete();
         $pesan = 'purchasing Berhasil Dihapus...!!!';
-        return redirect(route('purchasing'))->with('error',$pesan);
+        Alert::warning('Delete',$pesan);
+        return redirect(route('purchasing'));
     }
 }

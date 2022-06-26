@@ -9,18 +9,20 @@
 <body>
         <div style="display: flex; align-items: center; margin-bottom:-30px">
             <h2 style="text-align:center;">Laporan Pesanan </h2>
+            <h2 style="text-align:center;">PT CIPTA GRACIA LESTARI</h2>
         </div>
-    <table style="text-align: center; " border="1" cellspacing="0" cellpadding="8" width="100%">
+        <br>
+    <table style="text-align: center; " border="1" cellspacing="0" cellpadding="5" width="100%">
         <thead>
             <tr>
                 <th>No</th>
                 <th>Customer</th>
-                <th>Nama Product</th>
-                <th>Quantity</th>
-                <th>Barang QC</th>
                 <th>Tanggal Pesan</th>
                 <th>Tanggal Selesai</th>
                 <th>Tanggal Tempo</th>
+                <th>Nama Product</th>
+                <th>Quantity</th>
+                <th>Barang QC</th>
             </tr>
         </thead>
         <tbody>
@@ -38,8 +40,8 @@
             @endforeach
         </tbody>
         <tr>
-            <td colspan="7">Total</td>
-            <td>@rupiah($data->sum('barang_ready'))</td>
+            <td colspan="7">TOTAL</td>
+            <td><b>{{$data->sum('barang_ready')}}</b></td>
         </tr>
     </table>
 
