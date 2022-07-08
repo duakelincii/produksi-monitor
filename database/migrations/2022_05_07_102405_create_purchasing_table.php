@@ -17,12 +17,10 @@ class CreatePurchasingTable extends Migration
             $table->id();
             $table->string('kode');
             $table->string('id_supplier');
-            $table->string('id_product');
-            $table->string('quantity');
             $table->string('harga_barang');
             $table->dateTime('tgl_order');
             $table->dateTime('tgl_tempo');
-            $table->enum('status', ['lunas', 'belum lunas', 'jatuh tempo']);
+            $table->enum('status', ['po baru','lunas','jatuh tempo']);
             $table->timestamps();
             $table->softDeletes();
         });

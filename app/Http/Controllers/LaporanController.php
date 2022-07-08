@@ -42,7 +42,7 @@ class LaporanController extends Controller
     {
         if($request->start_date == null || $request->end_date == null)
         {
-            $datas = Pesanan::where('status' == 'selesai')->all();
+            $datas = Pesanan::all();
         }else{
             $datas = Pesanan::where('status' == 'selesai')->
                 whereBetween('tgl_selesai',[$request->start_date,$request->end_date])->get();

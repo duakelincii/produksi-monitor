@@ -84,7 +84,8 @@ class PengirimanController extends Controller
     public function surat_jalan($id)
     {
         $datas = Pengiriman::findOrFail($id);
-        $pdf = PDF::loadView('pdf.suratjalan',compact('datas'))->setPaper('A4','potrait');
+        $sj = "SJ-" .rand();
+        $pdf = PDF::loadView('pdf.suratjalan',compact('datas','sj'))->setPaper('A4','potrait');
         return $pdf->stream();
     }
 }

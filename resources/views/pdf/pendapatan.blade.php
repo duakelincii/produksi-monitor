@@ -31,7 +31,7 @@
             <tr>
                 <th>{{$loop->iteration}}</th>
                 <td>{{$data->customer->nama}}</td>
-                <td>{{$data->product->nama}}</td>
+                <td>{{$data->product->nama_product}}</td>
                 <td>{{$data->quantity}}</td>
                 <td>{{$data->barang_ready}}</td>
                 <td>{{\Carbon\Carbon::parse($data->tgl_order)->isoFormat('D MMMM Y')}}</td>

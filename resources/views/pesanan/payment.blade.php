@@ -28,6 +28,12 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-12">
+                        <label for="">Tanggal Pesanan</label>
+                        <div class="input-group mb-2">
+                            <input type="text" value="{{\Carbon\Carbon::parse($data->tgl_pesan)->isoFormat('D MMMM Y')}}" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
                         <label for="">Tanggal Jatuh Tempo</label>
                         <div class="input-group mb-2">
                             <input type="text" value="{{\Carbon\Carbon::parse($data->tgl_tempo)->isoFormat('D MMMM Y')}}" class="form-control" readonly>

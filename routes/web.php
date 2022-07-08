@@ -73,13 +73,17 @@ Route::middleware(['auth'])->group(function () {
     //purchasing
     Route::get('/purchasing','PurchasingController@index')->name('purchasing');
     Route::get('/purchasing/tambah','PurchasingController@create')->name('purchasing.create');
+    Route::get('/purchasing/tambah/aksesoris','PurchasingController@createaksesoris')->name('purchasing.aksesoris');
     Route::get('/purchasing/edit/{id}','PurchasingController@edit')->name('purchasing.edit');
+    Route::post('/purchasing/simpan/aksesoris','PurchasingController@storeaksesoris')->name('purchasing.simpan_aksesoris');
     Route::post('/purchasing/simpan','PurchasingController@store')->name('purchasing.simpan');
     Route::post('/purchasing/simpan/status','PurchasingController@store_status')->name('purchasing.status');
     Route::get('/purchasing/payment/{id}','PurchasingController@payment')->name('purchasing.payment');
     Route::post('/purchasing/payment/simpan','PurchasingController@payment_store')->name('po.payment');
     Route::get('/purchasing/stockin/{id}','PurchasingController@stockin')->name('purchasing.stockin');
+    Route::get('/purchasing/stockin/aksesoris/{id}','PurchasingController@stockin_acc')->name('purchasing.stockin_aksesoris');
     Route::post('/purchasing/stockin/simpan','PurchasingController@stockin_store')->name('stockin.simpan');
+    Route::post('/purchasing/stockin/simpan/aksesoris','PurchasingController@stockin_aksesoris')->name('stockin.aksesoris');
     Route::post('/purchasing/update','PurchasingController@update')->name('purchasing.update');
     Route::delete('/purchasing/delete/{id}','PurchasingController@destroy')->name('purchasing.delete');
 
@@ -88,6 +92,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/product/tambah','ProductController@create')->name('product.create');
     Route::get('/product/edit/{id}','ProductController@edit')->name('product.edit');
     Route::post('/product/simpan','ProductController@store')->name('product.simpan');
+    Route::get('/product/import/','ProductController@import')->name('product.import');
+    Route::post('/product/simpan/import','ProductController@importsimpan')->name('product.simpanimport');
     Route::post('/product/update','ProductController@update')->name('product.update');
     Route::delete('/product/delete/{id}','ProductController@destroy')->name('product.delete');
 
@@ -114,6 +120,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/aksesoris/simpan','AksesorisController@store')->name('aksesoris.simpan');
     Route::post('/aksesoris/update','AksesorisController@update')->name('aksesoris.update');
     Route::get('/aksesoris/delete/{id}','AksesorisController@destroy')->name('aksesoris.delete');
+
+    Route::get('/user','UserController@index')->name('user');
+    Route::get('/user/tambah','UserController@create')->name('create.user');
+    Route::post('/user/simpan','UserController@store')->name('simpan.user');
+    Route::get('/user/delete/{id}','UserController@delete')->name('user.delete');
 
 });
 

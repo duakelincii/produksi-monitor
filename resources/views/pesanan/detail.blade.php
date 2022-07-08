@@ -66,6 +66,7 @@
             </div>
                 @endforeach
 
+
                     <div class="form-group row">
                         <div class="col-sm-3 text-md-right">
                             <label for="keluhan-utama"><strong>Product</strong></label>
@@ -74,7 +75,21 @@
                             :
                         </div>
                         <div class="col-sm-8">
-                            <p class="text-md-left">{{ $data->product->nama }} / {{$data->barang_ready}} Pcs</p>
+                                <p class="text-md-left">{{$data->product->nama_product}} ( Bahan {{$data->product->nama_bahan}} ) </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-3 text-md-right">
+                            <label for="keluhan-utama"><strong>Aksesoris</strong></label>
+                        </div>
+                        <div class="col-sm-1 text-md-center">
+                            :
+                        </div>
+                        <div class="col-sm-8">
+                            @foreach ($values as $value )
+                                <li class="text-md-left">{{$value->aksesoris->nama_aksesoris}} / {{$value->qty_aksesoris}} Pcs</li>
+                                @endforeach
                         </div>
                     </div>
                     <div class="form-group row">

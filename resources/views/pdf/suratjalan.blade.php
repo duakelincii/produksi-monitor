@@ -57,13 +57,13 @@
     <table>
         <tr>
             <td align="center" width="430">
-               <font size="4"><b>SURAT JALAN</b></font>
+               <font size="4"><b>SURAT JALAN </b></font>
             </table>
             <br>
             <table cellspacing="0" width="100%">
                 <tr>
-                    <td>No Document</td>
-                    <td> : {{$datas->pesanan->kode}}</td>
+                    <td>No Surat Jalan</td>
+                    <td> : {{$sj}}</td>
                     <td>Nama Pengirim</td>
                     <td> : {{strtoupper($datas->nama_supir)}}</td>
                 </tr>
@@ -76,10 +76,14 @@
                 <tr>
                     <td>Tanggal Kirim</td>
                     <td> : {{\Carbon\Carbon::parse($datas->tgl_kirim)->isoFormat('D MMMM Y')}}</td>
+                    <td>No Pesanan</td>
+                    <td> : {{$datas->pesanan->kode}}</td>
                 </tr>
                 <tr>
                     <td>No Handphone</td>
                     <td> : {{$datas->customer->phone}}</td>
+                    <td>Tanggal Pesan</td>
+                    <td> : {{\Carbon\Carbon::parse($datas->tgl_pesan)->isoFormat('D MMMM Y')}}</td>
                 </tr>
             </table>
             </td>
@@ -99,7 +103,7 @@
             <?= $no = 1;?>
             <tr>
                 <td>{{$no++}}</td>
-                <td>{{$datas->pesanan->product->nama}}</td>
+                <td>{{$datas->pesanan->product->nama_product}}</td>
                 <td>{{$datas->pesanan->barang_ready}}</td>
             </tr>
         </tbody>

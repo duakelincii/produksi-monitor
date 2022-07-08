@@ -15,12 +15,10 @@ class CreatePesananTambahanTable extends Migration
     {
         Schema::create('pesanan_tambahan', function (Blueprint $table) {
             $table->unsignedBigInteger('id_pesanan');
-            $table->unsignedBigInteger('id_product');
             $table->unsignedBigInteger('id_aksesoris');
             $table->integer('qty_aksesoris');
 
             $table->foreign('id_pesanan')->references('id')->on('pesanan');
-            $table->foreign('id_product')->references('id')->on('product');
             $table->foreign('id_aksesoris')->references('id')->on('aksesoris');
         });
     }

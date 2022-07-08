@@ -4,6 +4,8 @@
         <div class="card-header d-sm-flex align-items-center justify-content-between py-3 ">
             <h6 class="m-0 font-weight-bold text-primary">Data Product</h6>
             <div>
+                <a href="{{route('product.import')}}" class="d-none d-sm-inline-block btn btn-success btn-sm shadow-sm">
+                    <i class="fas fa-excel fa-sm"></i> Import Product</a>
                 <a href="{{route('product.create')}}" class="d-none d-sm-inline-block btn btn-primary btn-sm shadow-sm">
                     <i class="fas fa-plus fa-sm"></i> Tambah Product</a>
             </div>
@@ -38,7 +40,7 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$data->nama_bahan}}</td>
-                            <td>{{$data->nama}}</td>
+                            <td>{{$data->nama_product}}</td>
                             <td>{{$data->stock}}</td>
                             <td>@rupiah($data->harga_beli)</td>
                             <td>@rupiah($data->harga_jual)</td>

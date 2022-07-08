@@ -22,7 +22,7 @@
                     <div class="col-sm-6">
                         <label for="">Product</label>
                         <div class="input-group mb-2">
-                            <input type="text" class="form-control" value="{{$data->product->nama}}" disabled readonly>
+                            <input type="text" class="form-control" value="{{$data->product->nama_product}}" disabled readonly>
                         </div>
                     </div>
                     <div class="col-sm-6">

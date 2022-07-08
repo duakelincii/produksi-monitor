@@ -49,7 +49,7 @@
                 <div class="sidebar-brand-icon rotate-n">
                     <img src="{{asset('logo/pt_gracia.jpg')}}" width="50" height="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">PT CIPTRA GRACIA LESTARI</div>
+                <div class="sidebar-brand-text mx-3">PT CIPTA GRACIA LESTARI</div>
             </a>
 
             <!-- Divider -->
@@ -95,23 +95,9 @@
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="{{route('purchasing.create')}}">Purchasing Order (PO)</a>
+                            <a class="collapse-item" href="{{route('purchasing.create')}}">PO Product</a>
+                            <a class="collapse-item" href="{{route('purchasing.aksesoris')}}">PO Aksesoris</a>
                             <a class="collapse-item" href="{{route('purchasing')}}">List PO</a>
-                        </div>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsequality"
-                        aria-expanded="true" aria-controls="collapsequality">
-                        <i class="fas fa-recycle"></i>
-                        <span>Quality Control</span>
-                    </a>
-                    <div id="collapsequality" class="collapse" aria-labelledby="headingquality"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="{{route('quality')}}">List Barang Hasil QC</a>
-                            <a class="collapse-item" href="{{route('quality.create')}}">Buat Quality Control</a>
                         </div>
                     </div>
                 </li>
@@ -148,6 +134,22 @@
                         </div>
                     </div>
                 </li>
+            @elseif ($role == 'monitoring')
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsequality"
+                    aria-expanded="true" aria-controls="collapsequality">
+                    <i class="fas fa-recycle"></i>
+                    <span>Monitoring</span>
+                </a>
+                <div id="collapsequality" class="collapse" aria-labelledby="headingquality"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{route('quality')}}">List Monitoring</a>
+                        <a class="collapse-item" href="{{route('quality.create')}}">Buat Monitoring</a>
+                    </div>
+                </div>
+            </li>
             @elseif ($role == 'admin')
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
@@ -176,7 +178,8 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{route('purchasing.create')}}">Purchasing Order (PO)</a>
+                        <a class="collapse-item" href="{{route('purchasing.create')}}">PO Product</a>
+                        <a class="collapse-item" href="{{route('purchasing.aksesoris')}}">PO Aksesoris</a>
                         <a class="collapse-item" href="{{route('purchasing')}}">List PO</a>
                     </div>
                 </div>
@@ -187,13 +190,13 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsequality"
                     aria-expanded="true" aria-controls="collapsequality">
                     <i class="fas fa-recycle"></i>
-                    <span>Quality Control</span>
+                    <span>Monitoring</span>
                 </a>
                 <div id="collapsequality" class="collapse" aria-labelledby="headingquality"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{route('quality')}}">List Barang Hasil QC</a>
-                        <a class="collapse-item" href="{{route('quality.create')}}">Buat Quality Control</a>
+                        <a class="collapse-item" href="{{route('quality')}}">List MONITORING</a>
+                        <a class="collapse-item" href="{{route('quality.create')}}">Buat MONITORING</a>
                     </div>
                 </div>
             </li>
@@ -258,13 +261,21 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="{{route('customer')}}"><i class="fas fa-address-book"> </i> Customer</a>
                             <a class="collapse-item" href="{{route('supplier')}}"><i class="fas fa-luggage-cart"> </i> Supplier</a>
-                            <a class="collapse-item" href="{{route('product')}}"><i class="fas fa-warehouse"> </i> Produk</a>
+                            <a class="collapse-item" href="{{route('product')}}"><i class="fas fa-warehouse"> </i> Bahan</a>
                             <a class="collapse-item" href="{{route('aksesoris')}}"><i class="fas fa-tasks"></i> Aksesoris</a>
+                            <a class="collapse-item" href="{{route('user')}}"><i class="fas fa-user"></i> User</a>
                         </div>
                     </div>
                 </li>
 
             @endif
+            <li class="nav-item ">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#logoutModal">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                   <span> Logout </span>
+                </a>
+            </li>
+
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -317,6 +328,15 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout

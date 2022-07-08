@@ -5,7 +5,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Formulir Purchase Order Baru</h6>
         </div>
         <div class="card-body">
-            <form class="user" action="{{route('purchasing.simpan')}}" method="post">
+            <form class="user" action="{{route('purchasing.simpan_aksesoris')}}" method="post">
                 @csrf
                 <div class="form-group row">
                     <div class="col-sm-12 mb-3 mb-sm-0">
@@ -42,46 +42,47 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        Bahan
-                    </div>
+                <div class="form-group row">
+                    <div class="card col-sm-12">
+                        <div class="card-header">
+                            Pilih Aksesoris
+                        </div>
 
-                    <div class="card-body">
-                        <table class="table" id="products_table">
-                            <thead>
-                                <tr>
-                                    <th>Bahan</th>
-                                    <th>Quantity</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr id="product0">
-                                    <td>
-                                        <select name="id_product[]" class="form-control">
-                                            <option value="">-- Pilih Bahan --</option>
-                                            @foreach ($products as $data)
-                                                <option value="{{ $data->id }}">
-                                                    {{ $data->nama_bahan }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type="number" name="qty_product[]" class="form-control" value="1" />
-                                    </td>
-                                </tr>
-                                <tr id="product1"></tr>
-                            </tbody>
-                        </table>
+                        <div class="card-body">
+                            <table class="table" id="products_table">
+                                <thead>
+                                    <tr>
+                                        <th>Aksesoris</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="product0">
+                                        <td>
+                                            <select name="id_aksesoris[]"  class="form-control">
+                                                <option value="">-- pilih aksesoris --</option>
+                                                @foreach ($aksesoris as $data )
+                                                    <option value="{{$data->id}}">{{$data->nama_aksesoris }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="qty_aksesoris[]" class="form-control" />
+                                        </td>
+                                    </tr>
+                                    <tr id="product1"></tr>
+                                </tbody>
+                            </table>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button id="add_row" class="btn btn-success pull-left">+ Add Row</button>
-                                <button id='delete_row' class="pull-right btn btn-danger">- Delete Row</button>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button id="add_row" class="btn btn-success pull-left">+ Tambah</button>
+                                    <button id='delete_row' class="pull-right btn btn-danger">- Hapus</button>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
 
@@ -101,7 +102,7 @@
         </div>
     </div>
     <script>
-       $(document).ready(function() {
+        $(document).ready(function() {
             let row_number = 1;
             $("#add_row").click(function(e) {
                 e.preventDefault();

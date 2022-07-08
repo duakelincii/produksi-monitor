@@ -47,8 +47,9 @@ class PesananController extends Controller
     public function detail($id)
     {
         $datas = Pesanan::where('id',$id)->get();
+        $values = Pesanantambahan::where('id_pesanan',$id)->get();
         $payment = Payment::where('id_pesanan',$id)->get();
-        return view('pesanan.detail',compact('datas','payment'));
+        return view('pesanan.detail',compact('datas','payment','values'));
     }
 
     public function store(Request $request)
@@ -58,32 +59,33 @@ class PesananController extends Controller
             $data = $request->all();
 
             $pesanan = new Pesanan;
-            $pesanan->id_product = $data['id_product'];
-            $pesanan->quantity = $data['quantity'];
             $pesanan->tgl_tempo = date('Y-m-d H:i:s', strtotime("+30 day",strtotime($data['tgl_selesai'])));
             $pesanan->kode = $data['kode'];
+            $pesanan->id_product = $data['id_product'];
+            $pesanan->quantity = $data['quantity'];
             $pesanan->id_customer = $data['id_customer'];
             $pesanan->tgl_pesan = $data['tgl_pesan'];
             $pesanan->tgl_selesai = $data['tgl_selesai'];
             $pesanan->status = 'order baru';
             $pesanan->save();
-            $dt_produk = Product::where('id', $request->id_product)->first();
-            $sisa_stock = $dt_produk->stock - $request->quantity;
-            Product::where('id',$request->id_product)->update(['stock' => $sisa_stock]);
-            if(count($request->id_aksesoris) > 0){
 
-                foreach ($request->id_aksesoris as $item=>$v)
-                {
+            if(count($request->id_aksesoris) > 0){
+            foreach ($request->id_aksesoris as $item=>$v)
+            {
                     $dt_aksesoris = Aksesoris::where('id', $request->id_aksesoris[$item])->first();
-                    $kurangi_stok = $dt_aksesoris->stock - $request->id_aksesoris[$item];
+                    $dt_product = Product::where('id', $request->id_product)->first();
+                    $kurangi_stok = $dt_aksesoris->stock - $request->qty_aksesoris[$item];
+                    $sisa_stock = $dt_product->stock - $request->quantity;
+                    $harga_total = ($dt_product->harga_jual * $request->quantity) + ($dt_aksesoris->harga * $request->qty_aksesoris[$item]);
                     $detail[] = array(
                         'id_pesanan'  => $pesanan->id,
-                        'id_product'    => $request->id_product,
                         'id_aksesoris' => $request->id_aksesoris[$item],
                         'qty_aksesoris' => $request->qty_aksesoris[$item],
                     );
                 }
                 Pesanantambahan::insert($detail);
+                Product::where('id',$request->id_product)->update(['stock' => $sisa_stock]);
+                Pesanan::where('id',$pesanan->id)->update(['harga_total' => $harga_total]);
                 Aksesoris::where('id',$request->id_aksesoris[$item])->update(['stock' => $kurangi_stok]);
             }
 
@@ -199,6 +201,7 @@ class PesananController extends Controller
     public function invoice($id)
     {
         $datas = Pesanan::findOrFail($id);
+        $value = Pesanantambahan::where('id_pesanan' , $id)->get();
         $pdf = PDF::loadView('pdf.invoice',compact('datas'))->setPaper('A4','potrait');
         return $pdf->stream();
     }

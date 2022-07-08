@@ -39,7 +39,7 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$data->customer->nama}}</td>
-                            <td>{{\Carbon\Carbon::parse($data->tgl_order)->isoFormat('D MMMM Y')}}</td>
+                            <td>{{\Carbon\Carbon::parse($data->tgl_pesan)->isoFormat('D MMMM Y')}}</td>
                             <td>{{\Carbon\Carbon::parse($data->tgl_selesai)->isoFormat('D MMMM Y')}}</td>
                             <td>
                                 @if ($data->status == 'order baru')
@@ -69,9 +69,7 @@
                             </td>
                             <td>
                                 <a href="{{route('pesanan.detail',$data->id)}}" class="btn btn-sm btn-secondary" title="Detail"><i class="fas fa-file-alt"></i></a>
-                                @if ($data->status == 'siap kirim')
-                                <a href="{{route('pesanan.invoice',$data->id)}}" target="-blank" class="btn btn-sm btn-info" title="PDF"><i class="fas fa-file-pdf"></i></a>
-                                @endif
+                                <a href="{{route('pesanan.invoice',$data->id)}}" target="-blank" class="btn btn-sm btn-info" title="Invoice"><i class="fas fa-file-pdf"></i></a>
                             </td>
 
                         </tr>

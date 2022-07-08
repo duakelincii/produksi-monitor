@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Product;
 use Illuminate\Http\Request;
 use Alert;
+use App\Imports\ProductImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -47,15 +49,16 @@ class ProductController extends Controller
         return redirect(route('product'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function import()
     {
-        //
+        return view('product.import');
+    }
+
+    public function importsimpan(Request $request)
+    {
+        Excel::import(new ProductImport, request()->file('file'));
+        Alert::success('Success','Import Master Data Berhasil');
+        return redirect(route('product'));
     }
 
     /**

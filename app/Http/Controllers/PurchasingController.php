@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Alert;
 use App\Aksesoris;
+use App\Purchasingproduct;
 use App\Purchasingtambahan;
 use PDF;
 
@@ -24,62 +25,90 @@ class PurchasingController extends Controller
         return view('purchasing.index',compact('datas'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $kode = 'PO-'.rand();
         $suppliers = Supplier::get();
         $products = Product::get();
-        $aksesoris = Aksesoris::get();
-        return view('purchasing.create',compact('kode','suppliers','products','aksesoris'));
+        return view('purchasing.create',compact('kode','suppliers','products'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function createaksesoris()
+    {
+        $kode = 'PO-'.rand();
+        $suppliers = Supplier::get();
+        $aksesoris = Aksesoris::get();
+        return view('purchasing.aksesoris',compact('kode','suppliers','aksesoris'));
+    }
+
     public function store(Request $request)
     {
+            // dd($request->all());
         DB::beginTransaction();
         try {
-            $dt_produk = Product::where('id', $request->id_product)->first();
             $data = $request->all();
             $purche = new Purchasing();
             $purche->kode = $data['kode'];
-            $purche->id_product = $data['id_product'];
             $purche->id_supplier = $data['id_supplier'];
-            $purche->quantity = $data['quantity'];
-            $purche->harga_barang = $data['quantity'] * $dt_produk->harga_beli;
             $purche->tgl_order = $data['tgl_order'];
             $purche->tgl_tempo = $data['tgl_tempo'];
+            $purche->label = 'product';
             $purche->status = 'po baru';
             $purche->save();
+            if(count($request->id_product) > 0){
 
+            foreach ($request->id_product as $item=>$v)
+                {
+                    $dt_product = Product::where('id', $request->id_product[$item])->first();
+                    $harga_total = ($dt_product->harga_beli * $request->qty_product[$item]);
+                    $detail[] = array(
+                        'id_purchasing'  => $purche->id,
+                        'id_product'    => $request->id_product[$item],
+                        'qty_product' => $request->qty_product[$item],
+                    );
+                }
+                Purchasingproduct::insert($detail);
+                Purchasing::where('id' , $purche->id)->update(['harga_barang' => $harga_total]);
+            }
+            DB::commit();
+            Alert::success('Success','PO Product Berhasil Dibuat');
+        return redirect(route('purchasing'));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+
+    public function storeaksesoris(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $request->all();
+            $purche = new Purchasing();
+            $purche->kode = $data['kode'];
+            $purche->id_supplier = $data['id_supplier'];
+            $purche->tgl_order = $data['tgl_order'];
+            $purche->tgl_tempo = $data['tgl_tempo'];
+            $purche->label = 'aksesoris';
+            $purche->status = 'po baru';
+            $purche->save();
             if(count($request->id_aksesoris) > 0){
 
                 foreach ($request->id_aksesoris as $item=>$v)
                 {
                     $dt_aksesoris = Aksesoris::where('id', $request->id_aksesoris[$item])->first();
-                    $kurangi_stok = $dt_aksesoris->stock - $request->id_aksesoris[$item];
+                    $harga_total = $dt_aksesoris->harga * $request->qty_aksesoris[$item];
                     $detail[] = array(
                         'id_purchasing'  => $purche->id,
-                        'id_product'    => $request->id_product,
                         'id_aksesoris' => $request->id_aksesoris[$item],
                         'qty_aksesoris' => $request->qty_aksesoris[$item],
                     );
                 }
                 Purchasingtambahan::insert($detail);
-                Aksesoris::where('id',$request->id_aksesoris[$item])->update(['stock' => $kurangi_stok]);
+                Purchasing::where('id' , $purche->id)->update(['harga_barang' => $harga_total]);
             }
-
             DB::commit();
-            Alert::success('Success','PO Berhasil Dibuat');
+            Alert::success('Success','PO Aksesoris Berhasil Dibuat');
         return redirect(route('purchasing'));
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -96,65 +125,48 @@ class PurchasingController extends Controller
         return redirect(route('purchasing'))->with('pesan',$pesan);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-
     public function stockin($id)
     {
        $datas = Purchasing::where('id',$id)->get();
-       $products = Product::get();
-       $aksesoris= Aksesoris::get();
-       $tambahan = Purchasingtambahan::where('id_purchasing',$id)->get();
-        return view('purchasing.stockin',compact('datas','products','aksesoris','tambahan'));
+       $tambahan_aksesoris = Purchasingtambahan::where('id_purchasing',$id)->get();
+       $tambahan_product = Purchasingproduct::where('id_purchasing',$id)->get();
+        return view('purchasing.stockin',compact('datas','tambahan_aksesoris','tambahan_product'));
+    }
+    public function stockin_acc($id)
+    {
+       $datas = Purchasing::where('id',$id)->get();
+       $tambahan_aksesoris = Purchasingtambahan::where('id_purchasing',$id)->get();
+       $tambahan_product = Purchasingproduct::where('id_purchasing',$id)->get();
+        return view('purchasing.stockinaksesoris',compact('datas','tambahan_aksesoris','tambahan_product'));
     }
 
     public function stockin_store(Request $request)
     {
+        // dd($request->all());
            DB::beginTransaction();
            try {
+                Purchasing::where('id',$request->id_purchasing)->update(['status' => 'stockin']);
+            if(count($request->id_product) > 0){
 
-            StockIn::insert([
-                'id_purchasing' => $request->id_purchasing,
-                'id_product'    => $request->id_product,
-                'quantity'      => $request->quantity,
-                'harga_beli'    => $request->harga_beli,
-            ]);
-
-            Purchasing::where('id',$request->id)->update([
-                'status' => 'belum lunas',
-            ]);
-
-            $dt_produk = Product::where('id', $request->id_product)->first();
-            $tambah_stock = $dt_produk->stock + $request->quantity;
-            $margin = $request->harga_beli * $request->margin_harga/100;
-            $harga_jual = $margin + $request->harga_beli;
-
-            Product::where('id',$request->id_product)->update([
-                    'stock'         => $tambah_stock,
-                    'harga_beli'    => $request->harga_beli,
-                    'harga_jual'    => $harga_jual,
-            ]);
-
-                if(count($request->id_acc) > 0){
-
-                    foreach ($request->id_acc as $item=>$v)
+                foreach ($request->id_product as $item=>$v)
                     {
-                        $dt_aksesoris = Aksesoris::where('id', $request->id_acc[$item])->first();
-                        $tambah_qty = $dt_aksesoris->stock + $request->qty_aksesoris[$item];
+                        $dt_product = Product::where('id', $request->id_product[$item])->first();
+                         $margin = $request->harga_beli[$item] * $request->margin[$item]/100;
+                         $harga_jual = $margin + $request->harga_beli[$item];
+                         $tambah_qty = $dt_product->stock + $request->qty_product[$item];
+                         $detail[] = array(
+                             'id_purchasing' => $request->id_purchasing,
+                             'id_product' => $request->id_product[$item],
+                             'qty_product' => $request->qty_product[$item],
+                             );
                     }
-                    Aksesoris::where('id',$request->id_acc[$item])->update(['stock' => $tambah_qty]);
+                         StockIn::insert($detail);
+                         Product::where('id',$request->id_product[$item])->update([
+                             'stock'         => $tambah_qty,
+                             'harga_beli'    => $request->harga_beli[$item],
+                             'harga_jual'    => $harga_jual,
+                         ]);
                 }
-
-
             DB::commit();
             Alert::success('Success','Memasukan Stock Berhasil..!!!');
             return redirect(route('purchasing'));
@@ -163,14 +175,38 @@ class PurchasingController extends Controller
             Alert::warning('Gagal',$th);
             return $th ;
            }
-
     }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function stockin_aksesoris(Request $request)
+    {
+        // dd($request->all());
+           DB::beginTransaction();
+           try {
+               Purchasing::where('id',$request->id_purchasing)->update(['status' => 'stockin']);
+            if(count($request->id_aksesoris) > 0){
+
+                foreach ($request->id_aksesoris as $item=>$v)
+                    {
+                        $dt_aksesoris = Aksesoris::where('id', $request->id_aksesoris[$item])->first();
+                        $tambah_qty = $dt_aksesoris->stock + $request->qty_aksesoris[$item];
+                        $detail[] = array(
+                                'id_purchasing' => $request->id_purchasing,
+                                'id_aksesoris' => $request->id_aksesoris[$item],
+                                'qty_aksesoris' => $request->qty_aksesoris[$item]
+                        );
+                    }
+                    StockIn::insert($detail);
+                    Aksesoris::where('id',$request->id_aksesoris[$item])->update(['stock' => $tambah_qty]);
+                }
+            DB::commit();
+            Alert::success('Success','Memasukan Stock Berhasil..!!!');
+            return redirect(route('purchasing'));
+           } catch (\Throwable $th) {
+            DB::rollBack();
+            Alert::warning('Gagal',$th);
+            return $th ;
+           }
+    }
+
     public function edit($id)
     {
         $datas = Purchasing::where('id',$id)->get();
@@ -179,13 +215,6 @@ class PurchasingController extends Controller
         return view('purchasing.edit',compact('datas','suppliers','products'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request)
     {
         DB::beginTransaction();

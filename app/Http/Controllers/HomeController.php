@@ -31,14 +31,14 @@ class HomeController extends Controller
         $jumlah['siap_kirim'] = Pesanan::where('status', 'siap kirim')->count();
         $jumlah['selesai'] = Pesanan::where('status', 'selesai')->count();
 
-        $bulan = Pesanan::select(DB::raw("MONTHNAME(created_at) as bulan"))
-            ->GroupBy(DB::raw("MONTHNAME(created_at)"))
+        $bulan = Pesanan::select(DB::raw("MONTHNAME(tgl_pesan) as bulan"))
+            ->GroupBy(DB::raw("MONTHNAME(tgl_pesan)"))
             ->pluck('bulan');
 
         $datas = Product::all();
 
         $pendapatan = Pesanan::select(DB::raw("CAST(SUM(harga_total) AS UNSIGNED INTEGER ) as harga_total"))
-            ->GroupBy(DB::raw("Month(created_at)"))
+            ->GroupBy(DB::raw("Month(tgl_pesan)"))
             ->pluck('harga_total');
         // dd($pendapatan);
         return view('home', compact('jumlah','bulan','pendapatan' ));

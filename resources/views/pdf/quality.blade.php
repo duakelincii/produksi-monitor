@@ -17,7 +17,7 @@
                 <th>No</th>
                 <th>Customer</th>
                 <th>Nama Product</th>
-                <th> Keterangan</th>
+                <th>Keterangan</th>
                 <th>Barang Rusak</th>
             </tr>
         </thead>
@@ -26,7 +26,7 @@
             <tr>
                 <th>{{$loop->iteration}}</th>
                 <td>{{$data->pesanan->customer->nama}}</td>
-                <td>{{$data->pesanan->product->nama}}</td>
+                <td>{{$data->pesanan->product->nama_product}}</td>
                 <td>{{strtoupper($data->ket)}}</td>
                 <td>{{$data->barang_rusak}}</td>
             </tr>

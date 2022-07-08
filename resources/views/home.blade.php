@@ -84,37 +84,52 @@
         var bulan = <?php echo json_encode($bulan); ?>;
         var pendapatan = <?php echo json_encode($pendapatan); ?>;
         Highcharts.chart('pendapatan', {
-
             title: {
                 text: 'Pendapatan Penjualan Bulanan'
             },
-
             yAxis: {
                 title: {
                     text: 'Pendapatan Bulanan'
+                },
+                labels : {
+                    formatter: function(value, index, values) {
+                        if (value === 0) {
+                            value = "";
+                            return value;
+                        } else if (value < 1000000) {
+                            return new Number(value);
+                        } else if (value < 1000000000) {
+                            return new Number(value / 1000000).toFixed(0) + 'jt';
+                        } else if (value < 1000000000000) {
+                            return new Number(value / 1000000000).toFixed(1) + 'M';
+                        } else {
+                            return new Number(value / 1000000000000).toFixed(0) + 'T';
+                        }
+                    },
                 }
             },
-
             xAxis: {
                 categories: bulan
             },
-
             legend: {
                 layout: 'vertical',
                 align: 'right',
                 verticalAlign: 'middle'
             },
-
             plotOptions: {
                 series: {
                     allowPointSelect: true
+                },
+                line:{
+                    dataLabels: {
+                        enabled: true,
+                     },
                 }
             },
             series: [{
                 name: 'Nominal Pendapatan',
                 data: pendapatan
             }],
-
             responsive: {
                 rules: [{
                     condition: {
@@ -129,7 +144,6 @@
                     }
                 }]
             }
-
         });
     </script>
 @endsection

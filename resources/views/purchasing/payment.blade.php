@@ -34,6 +34,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="">Tanggal PO</label>
+                        <div class="input-group mb-2">
+                            <input type="text" value="{{\Carbon\Carbon::parse($data->tgl_order)->isoFormat('D MMMM Y')}}" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="">Tanggal Jatuh Tempo</label>
+                        <div class="input-group mb-2">
+                            <input type="text" value="{{\Carbon\Carbon::parse($data->tgl_tempo)->isoFormat('D MMMM Y')}}" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
                 @if (strtotime($data->tgl_tempo) <= strtotime('10 day',strtotime(\Carbon\Carbon::now())))
                 <div class="form-group row">
                     <div class="col-sm-3">

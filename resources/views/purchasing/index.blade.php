@@ -17,7 +17,9 @@
                             <th>Nama Supplier</th>
                             <th>Tanggal Selesai</th>
                             <th>Status</th>
+                            <th>Label</th>
                             <th>Action</th>
+                            <th>Payment</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -26,7 +28,9 @@
                             <th>Nama Supplier</th>
                             <th>Tanggal Selesai</th>
                             <th>Status</th>
+                            <th>Label</th>
                             <th>Action</th>
+                            <th>Payment</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -36,8 +40,8 @@
                             <td>{{$data->supplier->nama}}</td>
                             <td>{{ \Carbon\Carbon::parse($data->tgl_tempo)->format('d-m-Y')}}</td>
                             <td>
-                                    @if ($data->status == 'belum lunas')
-                                        <div class="badge badge-danger"> Belum Lunas </div>
+                                    @if ($data->status == 'stockin')
+                                        <div class="badge badge-info"> Sudah StockIn </div>
                                     @elseif($data->status == 'po baru')
                                         <div class="badge badge-danger"> PO BARU </div>
                                     @elseif ($data->status == 'lunas')
@@ -49,9 +53,23 @@
                                     @endif
                             </td>
                             <td>
+                                @if ($data->label == 'product')
+                                        <div class="badge badge-secondary"> BAHAN </div>
+                                    @elseif($data->label == 'aksesoris')
+                                        <div class="badge badge-secondary"> AKSESORIS </div>
+                                        @endif
+                            </td>
+                            <td>
                                 @if ($data->status =='po baru')
-                                <a href="{{route('purchasing.stockin',$data->id)}}" class="btn btn-success btn-sm">Stock In</a>
-                                @elseif ($data->status == 'belum lunas')
+                                    @if ($data->label == 'product')
+                                    <a href="{{route('purchasing.stockin',$data->id)}}" class="btn btn-success btn-sm">STOCK IN</a>
+                                    @elseif($data->label == 'aksesoris')
+                                    <a href="{{route('purchasing.stockin_aksesoris',$data->id)}}" class="btn btn-success btn-sm">STOCK IN</a>
+                                    @endif
+                                @endif
+                                </td>
+                            <td>
+                                @if ($data->status != 'lunas')
                                 <a href="{{route('purchasing.payment',$data->id)}}" class="btn btn-sm btn-success" title="Bayar"><i class="fas fa-money-bill"></i> Payment</a>
                                 @endif
                             </td>

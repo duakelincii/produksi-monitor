@@ -62,16 +62,15 @@
             <br>
             <table cellspacing="0" width="100%">
                 <tr>
-                    <td>No Document</td>
+                    <td>No Pesanan</td>
                     <td> : {{$datas->kode}}</td>
-                    <td>Nama Pengirim</td>
-                    <td> : </td>
+                    <td>Tanggal Selesai</td>
+                    <td> : {{\Carbon\Carbon::parse($datas->tgl_selesai)->isoFormat('D MMMM Y')}}</td>
                 </tr>
                 <tr>
                     <td>Nama Customer</td>
                     <td> : {{$datas->customer->nama}}</td>
-                    <td>No Kendaraan</td>
-                    <td> : </td>
+
                 </tr>
                 <tr>
                     <td>Tanggal Pesan</td>
@@ -92,20 +91,25 @@
             <tr>
                 <th>No</th>
                 <th>Item</th>
+                <th>Harga Item</th>
                 <th>Qty</th>
+                <th>Sub Total</th>
             </tr>
         </thead>
         <tbody>
             <?= $no = 1;?>
+            <?= $subtotal = $datas->product->harga_jual * $datas->barang_ready; ?>
             <tr>
                 <td>{{$no++}}</td>
-                <td>{{$datas->product->nama}}</td>
+                <td>{{$datas->product->nama_product}}</td>
+                <td>{{$datas->product->harga_jual}}</td>
                 <td>{{$datas->barang_ready}}</td>
+                <td>@rupiah($subtotal)</td>
             </tr>
             <tr>
                 <th></th>
-                <th colspan="1">Total</th>
-                <th></th>
+                <th colspan="3">Total</th>
+                <th>@rupiah($subtotal)</th>
             </tr>
         </tbody>
     </table>
